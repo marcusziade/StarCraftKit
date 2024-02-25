@@ -1,6 +1,6 @@
 import Foundation
 
-struct Player: Codable {
+public struct Player: Codable {
     let active: Bool
     let age: Int
     let birthday: String
@@ -16,7 +16,7 @@ struct Player: Codable {
     let currentVideogame: Videogame?
 }
 
-struct Tournament: Codable {
+public struct Tournament: Codable {
     let beginAt: Date
     let detailedStats: Bool
     let endAt: Date
@@ -101,7 +101,7 @@ struct Serie: Codable {
     let year: Int
 }
 
-struct Match: Codable {
+public struct Match: Codable {
     let status: String
     let detailedStats: Bool
     let live: Live
