@@ -1,4 +1,5 @@
 # StarCraftKit
+<a href="https://wakatime.com/badge/user/52d828f5-807b-496a-bfc0-5dbef43c05e5/project/018de122-9301-4e14-a56f-4a6e87034a5d"><img src="https://wakatime.com/badge/user/52d828f5-807b-496a-bfc0-5dbef43c05e5/project/018de122-9301-4e14-a56f-4a6e87034a5d.svg" alt="wakatime"></a>
 
 Welcome to StarCraftKit, a Swift package tailored for developers engaged in creating apps or tools focused on the professional StarCraft II scene. This package provides a robust set of interfaces designed to streamline the handling, querying, and presentation of data related to players, matches, and tournaments within the StarCraft II pro scene.
 
