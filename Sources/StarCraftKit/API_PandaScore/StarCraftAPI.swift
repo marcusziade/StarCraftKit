@@ -44,6 +44,13 @@ public final class StarCraftAPI: StarCraftScoreable {
     private let token: String
     private let urlSession: URLSession
 
+    private var jsonDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }
+
     private func fetchData<T: Decodable>(
         endpoint: String,
         page: Int = 1,
@@ -70,7 +77,7 @@ public final class StarCraftAPI: StarCraftScoreable {
         else {
             throw PandaScoreAPIError(statusCode: (response as? HTTPURLResponse)?.statusCode ?? 500)
         }
-        return try JSONDecoder().decode(T.self, from: data)
+        return try jsonDecoder.decode(T.self, from: data)
     }
 
     private func createRequest(url: URL) -> URLRequest {

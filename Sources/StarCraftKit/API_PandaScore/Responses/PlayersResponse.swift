@@ -14,7 +14,7 @@ struct PlayersResponse: Codable {
     ///
     /// This computed property sorts the `players` array by the player's age in ascending order.
     var playersByAge: [Player] {
-        players.sorted(by: { $0.age < $1.age })
+        players.sorted(by: { ($0.age ?? 0) < ($1.age ?? 0) })
     }
 
     /// Returns a list of players from a specific country.
@@ -51,7 +51,7 @@ struct PlayersResponse: Codable {
     ///
     /// This computed property calculates the average age of the players.
     var averageAge: Double {
-        let totalAge = players.reduce(0) { $0 + $1.age }
+        let totalAge = players.reduce(0) { $0 + ($1.age ?? 0) }
         return players.isEmpty ? 0 : Double(totalAge) / Double(players.count)
     }
 

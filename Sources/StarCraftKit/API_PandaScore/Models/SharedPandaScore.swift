@@ -2,12 +2,12 @@ import Foundation
 
 public struct Player: Codable {
     let active: Bool
-    let age: Int
-    let birthday: String
-    let firstName: String
+    let age: Int?
+    let birthday: String?
+    let firstName: String?
     let id: Int
     let imageUrl: URL?
-    let lastName: String
+    let lastName: String?
     let modifiedAt: Date
     let name: String
     let nationality: String
