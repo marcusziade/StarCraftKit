@@ -3,9 +3,12 @@ import Foundation
 protocol StarCraftScoreable {
     var baseURL: URL { get }
 
-    func allPlayers() async throws -> [Player]
-    func allTournaments() async throws -> [Tournament]
-    func allMatches() async throws -> [Match]
+    /// Fetches all listed professional players for StarCraft II. This includes both active and inactive players. The list is not exhaustive and may not include all players. The list is paginated and may require multiple requests to retrieve all players.
+    func allPlayers(page: Int, perPage: Int) async throws -> [Player]
+    /// Fetches all listed tournaments for StarCraft II. The list is paginated and may require multiple requests to retrieve all tournaments. This includes past, ongoing, and upcoming tournaments. The list is not exhaustive and may not include all tournaments.
+    func allTournaments(page: Int, perPage: Int) async throws -> [Tournament]
+    /// Fetches all listed matches for StarCraft II. The list is paginated and may require multiple requests to retrieve all matches. This includes past, ongoing, and upcoming matches. The list is not exhaustive and may not include all matches.
+    func allMatches(page: Int, perPage: Int) async throws -> [Match]
 }
 
 public final class StarCraftAPI: StarCraftScoreable {
@@ -16,16 +19,24 @@ public final class StarCraftAPI: StarCraftScoreable {
         self.urlSession = urlSession
     }
 
-    public func allPlayers() async throws -> [Player] {
-        try await fetchData(endpoint: StarCraft2Endpoint.players.path)
+    public func allPlayers(page: Int = 1, perPage: Int = 50) async throws -> [Player] {
+        try await fetchData(endpoint: StarCraft2Endpoint.players.path, page: page, perPage: perPage)
     }
 
-    public func allTournaments() async throws -> [Tournament] {
-        try await fetchData(endpoint: StarCraft2Endpoint.allTournaments.path)
+    public func allTournaments(page: Int = 1, perPage: Int = 50) async throws -> [Tournament] {
+        try await fetchData(
+            endpoint: StarCraft2Endpoint.allTournaments.path,
+            page: page,
+            perPage: perPage
+        )
     }
 
-    public func allMatches() async throws -> [Match] {
-        try await fetchData(endpoint: StarCraft2Endpoint.allMatches.path)
+    public func allMatches(page: Int = 1, perPage: Int = 50) async throws -> [Match] {
+        try await fetchData(
+            endpoint: StarCraft2Endpoint.allMatches.path,
+            page: page,
+            perPage: perPage
+        )
     }
 
     // MARK: - Private
@@ -33,8 +44,24 @@ public final class StarCraftAPI: StarCraftScoreable {
     private let token: String
     private let urlSession: URLSession
 
-    private func fetchData<T: Decodable>(endpoint: String) async throws -> T {
-        let url = baseURL.appendingPathComponent(endpoint)
+    private func fetchData<T: Decodable>(
+        endpoint: String,
+        page: Int = 1,
+        perPage: Int = 50
+    ) async throws -> T {
+        var components = URLComponents(
+            url: baseURL.appendingPathComponent(endpoint),
+            resolvingAgainstBaseURL: true
+        )
+        components?.queryItems = [
+            URLQueryItem(name: "page", value: String(page)),
+            URLQueryItem(name: "per_page", value: String(perPage)),
+        ]
+
+        guard let url = components?.url else {
+            throw URLError(.badURL)
+        }
+
         let request = createRequest(url: url)
         let (data, response) = try await urlSession.data(for: request)
         guard
