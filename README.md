@@ -29,6 +29,26 @@ Then, import StarCraftKit in your Swift files to access its functionalities:
 import StarCraftKit
 ```
 
+## CLI Application
+
+The StarCraftCLI, built with the StarCraftKit package, is a CLI tool for accessing data on StarCraft II tournaments, players, and matches. It uses command-line arguments to perform actions:
+
+- **tournaments**: Lists all StarCraft II tournaments.
+- **players**: Retrieves professional player profiles and statistics.
+- **matches**: Fetches details on specific matches.
+
+### Usage
+
+Compile and run the application with Swift, providing commands like `swift run StarCraftCLI tournaments` to fetch data. A valid `PANDA_TOKEN` environment variable is required for API requests.
+
+### Environment Variable
+
+Set the `PANDA_TOKEN` environment variable with your PandaScore API token for authentication.
+
+### Getting Started
+
+To use StarCraftCLI, clone the repository, ensure Swift 5.7 or later is installed, and follow the commands to start fetching data.
+
 ## Environment Variables in Xcode
 
 To securely access the PandaScore API, which powers the package, you'll need to use an API token. Upon signing up with PandaScore, you're given a unique token.
