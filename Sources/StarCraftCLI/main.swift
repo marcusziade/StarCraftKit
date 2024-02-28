@@ -5,7 +5,7 @@ let arguments = CommandLine.arguments
 
 func main() {
     guard arguments.count > 1 else {
-        print("Usage: StarCraftCLI [command] [options]")
+        printInstructions()
         return
     }
     
@@ -25,6 +25,21 @@ func main() {
     }
     
     RunLoop.current.run()
+}
+
+func printInstructions() {
+    print()
+    print("👾 Welcome to StarCraftCLI 👾")
+    print()
+    print("Commands:")
+    print("tournaments - Fetch all tournaments")
+    print("players - Fetch all players")
+    print("matches - Fetch all matches")
+    print()
+    print("You must provide a valid PANDA_TOKEN environment variable")
+    print()
+    print("Usage: swift build, swift run StarCraftCLI <command>")
+    print("Exampled: swift run StarCraftCLI tournaments. This will fetch tournaments")
 }
 
 func fetchTournaments() async {
