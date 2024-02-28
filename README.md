@@ -19,7 +19,7 @@ To start using StarCraftKit in your project, ensure you have Swift 5.7 or later 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/StarCraftKit.git", from: "1.0.0")
+    .package(url: "https://github.com/marcusziade/StarCraftKit.git", from: "1.0.0")
 ]
 ```
 
