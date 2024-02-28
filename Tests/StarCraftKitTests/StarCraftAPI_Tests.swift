@@ -9,10 +9,10 @@ final class StarCraftAPI_Tests: XCTestCase {
             fatalError("PANDA_TOKEN environment variable not set")
         }
         let api = StarCraftAPI(token: token)
-        let players = try await api.allPlayers()
-        XCTAssertFalse(players.isEmpty)
+        let response = try await api.allPlayers()
+        XCTAssertFalse(response.players.isEmpty)
 
-        let player = players.first!
+        let player = response.players.first!
         XCTAssertNotNil(player.id)
         XCTAssertNotNil(player.firstName)
         XCTAssertNotNil(player.lastName)
@@ -24,10 +24,10 @@ final class StarCraftAPI_Tests: XCTestCase {
             fatalError("PANDA_TOKEN environment variable not set")
         }
         let api = StarCraftAPI(token: token)
-        let matches = try await api.allMatches()
-        XCTAssertFalse(matches.isEmpty)
+        let response = try await api.allMatches()
+        XCTAssertFalse(response.matches.isEmpty)
 
-        let match = matches.first!
+        let match = response.matches.first!
         XCTAssertNotNil(match.id)
     }
     
@@ -36,10 +36,10 @@ final class StarCraftAPI_Tests: XCTestCase {
             fatalError("PANDA_TOKEN environment variable not set")
         }
         let api = StarCraftAPI(token: token)
-        let tournaments = try await api.allTournaments()
-        XCTAssertFalse(tournaments.isEmpty)
+        let response = try await api.allTournaments()
+        XCTAssertFalse(response.tournaments.isEmpty)
 
-        let tournament = tournaments.first!
+        let tournament = response.tournaments.first!
         XCTAssertNotNil(tournament.id)
         XCTAssertNotNil(tournament.name)
     }

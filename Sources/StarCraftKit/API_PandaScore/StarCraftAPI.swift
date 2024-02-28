@@ -4,11 +4,14 @@ protocol StarCraftScoreable {
     var baseURL: URL { get }
 
     /// Fetches all listed professional players for StarCraft II. This includes both active and inactive players. The list is not exhaustive and may not include all players. The list is paginated and may require multiple requests to retrieve all players.
-    func allPlayers(page: Int, perPage: Int) async throws -> [Player]
+    /// - Returns: A ``PlayersResponse`` instance containing interface methods for filtering and grouping players.
+    func allPlayers(page: Int, perPage: Int) async throws -> PlayersResponse
     /// Fetches all listed tournaments for StarCraft II. The list is paginated and may require multiple requests to retrieve all tournaments. This includes past, ongoing, and upcoming tournaments. The list is not exhaustive and may not include all tournaments.
-    func allTournaments(page: Int, perPage: Int) async throws -> [Tournament]
+    /// - Returns: A ``TournamentsResponse`` instance containing interface methods for filtering and grouping tournaments.
+    func allTournaments(page: Int, perPage: Int) async throws -> TournamentsResponse
     /// Fetches all listed matches for StarCraft II. The list is paginated and may require multiple requests to retrieve all matches. This includes past, ongoing, and upcoming matches. The list is not exhaustive and may not include all matches.
-    func allMatches(page: Int, perPage: Int) async throws -> [Match]
+    /// - Returns: A ``MatchResponse`` instance containing interface methods for filtering and grouping matches.
+    func allMatches(page: Int, perPage: Int) async throws -> MatchResponse
 }
 
 public final class StarCraftAPI: StarCraftScoreable {
@@ -19,24 +22,30 @@ public final class StarCraftAPI: StarCraftScoreable {
         self.urlSession = urlSession
     }
 
-    public func allPlayers(page: Int = 1, perPage: Int = 50) async throws -> [Player] {
-        try await fetchData(endpoint: StarCraft2Endpoint.players.path, page: page, perPage: perPage)
+    public func allPlayers(page: Int = 1, perPage: Int = 50) async throws -> PlayersResponse {
+        PlayersResponse(
+            players: try await fetchData(
+                endpoint: StarCraft2Endpoint.players.path,
+                page: page,
+                perPage: perPage
+            )
+        )
     }
 
-    public func allTournaments(page: Int = 1, perPage: Int = 50) async throws -> [Tournament] {
-        try await fetchData(
+    public func allTournaments(page: Int = 1, perPage: Int = 50) async throws -> TournamentsResponse {
+        TournamentsResponse(tournaments: try await fetchData(
             endpoint: StarCraft2Endpoint.allTournaments.path,
             page: page,
             perPage: perPage
-        )
+        ))
     }
 
-    public func allMatches(page: Int = 1, perPage: Int = 50) async throws -> [Match] {
-        try await fetchData(
+    public func allMatches(page: Int = 1, perPage: Int = 50) async throws -> MatchResponse {
+        MatchResponse(matches: try await fetchData(
             endpoint: StarCraft2Endpoint.allMatches.path,
             page: page,
             perPage: perPage
-        )
+        ))
     }
 
     // MARK: - Private

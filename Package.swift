@@ -14,12 +14,14 @@ let package = Package(
         .library(
             name: "StarCraftKit",
             targets: ["StarCraftKit"]
-        )
+        ),
+        .executable(name: "StarCraftCLI", targets: ["StarCraftCLI"]),
     ],
     targets: [
         .target(
             name: "StarCraftKit"
         ),
+        .target(name: "StarCraftCLI", dependencies: ["StarCraftKit"]),
         .testTarget(
             name: "StarCraftKitTests",
             dependencies: ["StarCraftKit"]
