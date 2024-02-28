@@ -21,7 +21,7 @@ let package = Package(
         .target(
             name: "StarCraftKit"
         ),
-        .target(name: "StarCraftCLI", dependencies: ["StarCraftKit"]),
+        .executableTarget(name: "StarCraftCLI", dependencies: ["StarCraftKit"]),
         .testTarget(
             name: "StarCraftKitTests",
             dependencies: ["StarCraftKit"]
