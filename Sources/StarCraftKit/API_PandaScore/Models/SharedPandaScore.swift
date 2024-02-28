@@ -33,7 +33,7 @@ public struct Tournament: Codable {
     let serieId: Int
     let slug: String
     let tier: String
-    let videogame: Videogame
+    let videogame: Videogame?
     let winnerId: Int?
     let winnerType: String?
 }
@@ -56,12 +56,12 @@ struct Game: Codable {
     let endAt: Date?
     let finished: Bool
     let forfeit: Bool
-    let id: Int
+    let id: Int?
     let length: Int?
     let matchId: Int
     let position: Int
     let status: String
-    let winner: Winner
+    let winner: Winner?
 }
 
 struct Result: Codable {
@@ -93,11 +93,11 @@ struct Serie: Codable {
     let id: Int
     let leagueId: Int
     let modifiedAt: Date
-    let name: String
+    let name: String?
     let season: String?
     let slug: String
-    let winnerId: Int
-    let winnerType: String
+    let winnerId: Int?
+    let winnerType: String?
     let year: Int
 }
 
@@ -110,7 +110,7 @@ public struct Match: Codable {
     let games: [Game]?
     let matchType: String
     let results: [Result]?
-    let id: Int
+    let id: Int?
     let name: String
     let endAt: Date?
     let beginAt: Date?
@@ -141,6 +141,6 @@ struct Live: Codable {
 }
 
 struct Winner: Codable {
-    let id: Int
+    let id: Int?
     let type: String
 }
