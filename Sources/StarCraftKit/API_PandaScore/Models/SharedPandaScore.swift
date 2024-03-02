@@ -1,146 +1,146 @@
 import Foundation
 
 public struct Player: Codable {
-    let active: Bool
-    let age: Int?
-    let birthday: String?
-    let firstName: String?
-    let id: Int
-    let imageUrl: URL?
-    let lastName: String?
-    let modifiedAt: Date
-    let name: String
-    let nationality: String
-    let role: String?
-    let slug: String
-    let currentVideogame: Videogame?
+    public let active: Bool
+    public let age: Int?
+    public let birthday: String?
+    public let firstName: String?
+    public let id: Int
+    public let imageUrl: URL?
+    public let lastName: String?
+    public let modifiedAt: Date
+    public let name: String
+    public let nationality: String
+    public let role: String?
+    public let slug: String
+    public let currentVideogame: Videogame?
 }
 
 public struct Tournament: Codable {
-    let beginAt: Date
-    let detailedStats: Bool
-    let endAt: Date
-    let hasBracket: Bool
-    let id: Int
-    let league: League?
-    let leagueId: Int
-    let liveSupported: Bool
-    let matches: [Match]?
-    let modifiedAt: Date
-    let name: String
-    let prizepool: String?
-    let serie: Serie?
-    let serieId: Int
-    let slug: String
-    let tier: String
-    let videogame: Videogame?
-    let winnerId: Int?
-    let winnerType: String?
+    public let beginAt: Date
+    public let detailedStats: Bool
+    public let endAt: Date
+    public let hasBracket: Bool
+    public let id: Int
+    public let league: League?
+    public let leagueId: Int
+    public let liveSupported: Bool
+    public let matches: [Match]?
+    public let modifiedAt: Date
+    public let name: String
+    public let prizepool: String?
+    public let serie: Serie?
+    public let serieId: Int
+    public let slug: String
+    public let tier: String
+    public let videogame: Videogame?
+    public let winnerId: Int?
+    public let winnerType: String?
 }
 
-struct OpponentEntry: Codable {
-    let opponent: Player
-    let type: String
+public struct OpponentEntry: Codable {
+    public let opponent: Player
+    public let type: String
 }
 
-struct Videogame: Codable {
-    let id: Int
-    let name: String
-    let slug: String
+public struct Videogame: Codable {
+    public let id: Int
+    public let name: String
+    public let slug: String
 }
 
-struct Game: Codable {
-    let beginAt: Date?
-    let complete: Bool
-    let detailedStats: Bool
-    let endAt: Date?
-    let finished: Bool
-    let forfeit: Bool
-    let id: Int?
-    let length: Int?
-    let matchId: Int
-    let position: Int
-    let status: String
-    let winner: Winner?
+public struct Game: Codable {
+    public let beginAt: Date?
+    public let complete: Bool
+    public let detailedStats: Bool
+    public let endAt: Date?
+    public let finished: Bool
+    public let forfeit: Bool
+    public let id: Int?
+    public let length: Int?
+    public let matchId: Int
+    public let position: Int
+    public let status: String
+    public let winner: Winner?
 }
 
-struct Result: Codable {
-    let score: Int
-    let playerId: Int
+public struct Result: Codable {
+    public let score: Int
+    public let playerId: Int
 }
 
-struct Stream: Codable {
-    let embedUrl: URL?
-    let language: String
-    let main: Bool
-    let official: Bool
-    let rawUrl: URL?
+public struct Stream: Codable {
+    public let embedUrl: URL?
+    public let language: String
+    public let main: Bool
+    public let official: Bool
+    public let rawUrl: URL?
 }
 
-struct League: Codable {
-    let id: Int
-    let imageUrl: URL?
-    let modifiedAt: Date
-    let name: String
-    let slug: String
-    let url: URL?
+public struct League: Codable {
+    public let id: Int
+    public let imageUrl: URL?
+    public let modifiedAt: Date
+    public let name: String
+    public let slug: String
+    public let url: URL?
 }
 
-struct Serie: Codable {
-    let beginAt: Date
-    let endAt: Date
-    let fullName: String
-    let id: Int
-    let leagueId: Int
-    let modifiedAt: Date
-    let name: String?
-    let season: String?
-    let slug: String
-    let winnerId: Int?
-    let winnerType: String?
-    let year: Int
+public struct Serie: Codable {
+    public let beginAt: Date
+    public let endAt: Date
+    public let fullName: String
+    public let id: Int
+    public let leagueId: Int
+    public let modifiedAt: Date
+    public let name: String?
+    public let season: String?
+    public let slug: String
+    public let winnerId: Int?
+    public let winnerType: String?
+    public let year: Int
 }
 
 public struct Match: Codable {
-    let status: String
-    let detailedStats: Bool
-    let live: Live
-    let scheduledAt: Date?
-    let leagueId: Int?
-    let games: [Game]?
-    let matchType: String
-    let results: [Result]?
-    let id: Int?
-    let name: String
-    let endAt: Date?
-    let beginAt: Date?
-    let winnerType: String?
-    let originalScheduledAt: Date?
-    let draw: Bool
-    let numberOfGames: Int
-    let rescheduled: Bool
-    let league: League?
-    let serie: Serie?
-    let slug: String
-    let videogame: Videogame?
-    let tournamentId: Int
-    let winner: Player?
-    let modifiedAt: Date
-    let opponents: [OpponentEntry]?
-    let streamsList: [Stream]
-    let winnerId: Int?
-    let tournament: Tournament?
-    let gameAdvantage: Int?
-    let forfeit: Bool
+    public let status: String
+    public let detailedStats: Bool
+    public let live: Live
+    public let scheduledAt: Date?
+    public let leagueId: Int?
+    public let games: [Game]?
+    public let matchType: String
+    public let results: [Result]?
+    public let id: Int?
+    public let name: String
+    public let endAt: Date?
+    public let beginAt: Date?
+    public let winnerType: String?
+    public let originalScheduledAt: Date?
+    public let draw: Bool
+    public let numberOfGames: Int
+    public let rescheduled: Bool
+    public let league: League?
+    public let serie: Serie?
+    public let slug: String
+    public let videogame: Videogame?
+    public let tournamentId: Int
+    public let winner: Player?
+    public let modifiedAt: Date
+    public let opponents: [OpponentEntry]?
+    public let streamsList: [Stream]
+    public let winnerId: Int?
+    public let tournament: Tournament?
+    public let gameAdvantage: Int?
+    public let forfeit: Bool
 }
 
-struct Live: Codable {
-    let opensAt: Date?
-    let supported: Bool
-    let url: URL?
+public struct Live: Codable {
+    public let opensAt: Date?
+    public let supported: Bool
+    public let url: URL?
 }
 
-struct Winner: Codable {
-    let id: Int?
-    let type: String
+public struct Winner: Codable {
+    public let id: Int?
+    public let type: String
 }
