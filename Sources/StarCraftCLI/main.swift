@@ -108,12 +108,6 @@ func upcomingTournaments() async {
     do {
         let response = try await api.allTournaments()
         let upcoming = response.upcomingTournaments
-        print("Fetched \(upcoming.count) upcoming tournaments")
-
-        // var tournamentNames = [String]()
-        // for tournament in upcoming {
-        //     tournamentNames.append(tournament.league?.name ?? "Unknown")
-        // }
         let tournamentNames = upcoming.map { $0.league?.name ?? "Unknown" }
         print(Set(tournamentNames))
     } catch {
