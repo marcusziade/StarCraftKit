@@ -17,6 +17,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: macos-13
     steps:
       - name: Checkout
@@ -30,13 +31,13 @@ jobs:
           xcode-version: '15.1.0'
       - name: Build DocC
         run: |
-          swift package generate-xcodeproj
-          xcodebuild docbuild -scheme StarCraftKit-Package -derivedDataPath /tmp/docbuild -destination 'generic/platform=iOS'
+          swift package resolve;
+          xcodebuild docbuild -scheme StarCraftKit -derivedDataPath /tmp/docbuild -destination 'generic/platform=iOS';
           $(xcrun --find docc) process-archive \
             transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/StarCraftKit.doccarchive \
             --output-path docs \
-            --hosting-base-path 'StarCraftKit'
-          echo "<script>window.location.href += \"/documentation/starcraftkit\"</script>" > docs/index.html
+            --hosting-base-path 'StarCraftKit';
+          echo "<script>window.location.href += \"/documentation/starcraftkit\"</script>" > docs/index.html;
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
