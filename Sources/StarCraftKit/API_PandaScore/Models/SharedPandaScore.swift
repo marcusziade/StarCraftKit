@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Player: Codable {
+public struct Player: Codable, Identifiable {
     public let active: Bool
     public let age: Int?
     public let birthday: String?
@@ -16,7 +16,7 @@ public struct Player: Codable {
     public let currentVideogame: Videogame?
 }
 
-public struct Tournament: Codable {
+public struct Tournament: Codable, Identifiable {
     public let beginAt: Date
     public let detailedStats: Bool
     public let endAt: Date
@@ -49,7 +49,7 @@ public struct Videogame: Codable {
     public let slug: String
 }
 
-public struct Game: Codable {
+public struct Game: Codable, Identifiable {
     public let beginAt: Date?
     public let complete: Bool
     public let detailedStats: Bool
@@ -77,7 +77,7 @@ public struct Stream: Codable {
     public let rawUrl: URL?
 }
 
-public struct League: Codable {
+public struct League: Codable, Identifiable, Hashable {
     public let id: Int
     public let imageUrl: URL?
     public let modifiedAt: Date
@@ -86,7 +86,7 @@ public struct League: Codable {
     public let url: URL?
 }
 
-public struct Serie: Codable {
+public struct Serie: Codable, Identifiable {
     public let beginAt: Date
     public let endAt: Date
     public let fullName: String
@@ -101,7 +101,7 @@ public struct Serie: Codable {
     public let year: Int
 }
 
-public struct Match: Codable {
+public struct Match: Codable, Identifiable {
     public let status: String
     public let detailedStats: Bool
     public let live: Live
