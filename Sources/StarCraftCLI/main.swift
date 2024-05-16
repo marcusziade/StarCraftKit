@@ -107,9 +107,36 @@ func ongoingTournaments() async {
 func upcomingTournaments() async {
     do {
         let response = try await api.allTournaments()
-        let upcoming = response.upcomingTournaments
-        let tournamentNames = upcoming.map { $0.league?.name ?? "Unknown" }
-        print(Set(tournamentNames))
+        let upcoming = response.tournaments.filter { $0.beginAt > Date() }  // Filtering upcoming tournaments
+
+        // Format and print all props for each tournament
+        let formattedTournaments = upcoming.map { tournament in
+            """
+            Name: \t\t\t\(tournament.name)
+            Start Date: \t\t\(DateFormatter.prettyFormatter.string(from: tournament.beginAt))
+            End Date: \t\t\(DateFormatter.prettyFormatter.string(from: tournament.endAt))
+            League: \t\t\(tournament.league?.name ?? "Unknown")
+            Game: \t\t\t\(tournament.videogame?.name ?? "Unknown")
+            Tier: \t\t\t\(tournament.tier)
+            Slug: \t\t\t\(tournament.slug)
+            Has Bracket: \t\t\(tournament.hasBracket)
+            Live Supported: \t\(tournament.liveSupported)
+            Detailed Stats: \t\(tournament.detailedStats)
+            Prize Pool: \t\t\(tournament.prizepool ?? "Unknown")
+            Series: \t\t\(tournament.serie?.name ?? "Unknown")
+            Winner ID: \t\t\(tournament.winnerId ?? 0)
+            Winner Type: \t\t\(tournament.winnerType ?? "Unknown")
+            Match Count: \t\t\(tournament.matches?.count ?? 0)
+            Last Modified: \t\t\(DateFormatter.prettyFormatter.string(from: tournament.modifiedAt))
+            ID: \t\t\t\(tournament.id)
+            League ID: \t\t\(tournament.leagueId)
+            Series ID: \t\t\(tournament.serieId)
+            Game Slug: \t\t\(tournament.videogame?.slug ?? "Unknown")
+            \n
+            """
+        }
+        
+        formattedTournaments.forEach { print($0) }
     } catch {
         print("Failed to fetch upcoming tournaments: \(error)")
     }
