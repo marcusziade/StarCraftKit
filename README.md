@@ -27,7 +27,9 @@ import StarCraftKit
 ```
 
 ## Terminal User Interface (TUI)
+![CleanShot 2024-10-29 at 21 36 49@2x](https://github.com/user-attachments/assets/b99db46c-71e3-48e1-9db4-952730e0d427)
 StarCraftTUI II is an interactive terminal-based interface built with the StarCraftKit package. It provides a user-friendly way to access StarCraft II professional scene data through a navigable menu system.
+
 
 ### Features
 - Interactive command menu with keyboard navigation
