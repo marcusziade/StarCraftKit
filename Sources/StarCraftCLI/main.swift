@@ -13,6 +13,8 @@ func main() {
 
     Task.detached(priority: .medium) {
         switch command {
+        case "-ap":
+            await activePlayers()
         case "-ot":
             await ongoingTournaments()
         case "-ut":

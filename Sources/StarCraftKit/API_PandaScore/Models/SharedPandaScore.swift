@@ -10,7 +10,7 @@ public struct Player: Codable, Identifiable {
     public let lastName: String?
     public let modifiedAt: Date
     public let name: String
-    public let nationality: String
+    public let nationality: String?
     public let role: String?
     public let slug: String
     public let currentVideogame: Videogame?
