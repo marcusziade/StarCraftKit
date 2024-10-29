@@ -1,21 +1,17 @@
 # StarCraftKit
 <a href="https://wakatime.com/badge/user/52d828f5-807b-496a-bfc0-5dbef43c05e5/project/018de122-9301-4e14-a56f-4a6e87034a5d"><img src="https://wakatime.com/badge/user/52d828f5-807b-496a-bfc0-5dbef43c05e5/project/018de122-9301-4e14-a56f-4a6e87034a5d.svg" alt="wakatime"></a>
 
-
 Welcome to StarCraftKit, a Swift package tailored for developers engaged in creating apps or tools focused on the professional StarCraft II scene. This package provides a robust set of interfaces designed to streamline the handling, querying, and presentation of data related to players, matches, and tournaments within the StarCraft II pro scene.
 
 ## About StarCraftKit
-
 StarCraftKit offers Swift interfaces for the pro StarCraft II scene, making it easier to integrate professional game data into your applications. Whether you're building an app to display live match updates, track player statistics, or organize tournament information, StarCraftKit has the tools you need to get the job done efficiently and effectively.
 
 ## Features
-
--   **Player Profiles**: Access detailed profiles of professional StarCraft II players, including statistics, current status, and match history.
--   **Match Details**: Query information about specific matches, including player matchups, game results, and detailed statistical analysis.
--   **Tournament Data**: Explore comprehensive details about past, ongoing, and upcoming tournaments, including brackets, match schedules, and winner information.
+- **Player Profiles**: Access detailed profiles of professional StarCraft II players, including statistics, current status, and match history.
+- **Match Details**: Query information about specific matches, including player matchups, game results, and detailed statistical analysis.
+- **Tournament Data**: Explore comprehensive details about past, ongoing, and upcoming tournaments, including brackets, match schedules, and winner information.
 
 ## Getting Started
-
 To start using StarCraftKit in your project, ensure you have Swift 5.7 or later and add the package to your project dependencies:
 
 ```swift
@@ -30,40 +26,57 @@ Then, import StarCraftKit in your Swift files to access its functionalities:
 import StarCraftKit
 ```
 
-## CLI Application
+## Terminal User Interface (TUI)
+StarCraftTUI II is an interactive terminal-based interface built with the StarCraftKit package. It provides a user-friendly way to access StarCraft II professional scene data through a navigable menu system.
 
-The StarCraftCLI, built with the StarCraftKit package, is a CLI tool for accessing data on StarCraft II tournaments, players, and matches. It uses command-line arguments to perform actions:
+### Features
+- Interactive command menu with keyboard navigation
+- Real-time data fetching for tournaments, matches, and players
+- VIM-style keyboard shortcuts
+- Loading state indicators
+- Color-coded interface elements
 
-- **tournaments**: Lists all StarCraft II tournaments.
-- **players**: Retrieves professional player profiles and statistics.
-- **matches**: Fetches details on specific matches.
+### Available Commands
+- `-ap`: Active Players
+- `-lt`: Live Tournaments
+- `-om`: Ongoing Matches
+- `-ot`: Ongoing Tournaments
+- `-ut`: Upcoming Tournaments
+- `-ls`: Live Streams
+- `-pd`: Player Details
+- `-td`: Tournament Details
+- `-ms`: Match Stats
+- `-gs`: Game Stats
+- `-us`: Upcoming Streams
+- `-ld`: League Details
+- `-sd`: Series Details
+- `-pa`: Player Activity
 
-### Usage
+### Navigation
+- Arrow keys or VIM keys (h,j,k,l) for movement
+- Enter/Space to execute commands
+- 'q' to quit
 
-Compile and run the application with Swift, providing commands like `swift run StarCraftCLI tournaments` to fetch data. A valid `PANDA_TOKEN` environment variable is required for API requests.
+### Requirements
+- A valid `PANDA_TOKEN` environment variable must be set
+- Terminal with ANSI escape sequence support
 
-### Environment Variable
+## Environment Variables
+To use StarCraftKit and its TUI, you'll need to set up the required environment variable:
 
-Set the `PANDA_TOKEN` environment variable with your PandaScore API token for authentication.
-
-### Getting Started
-
-To use StarCraftCLI, clone the repository, ensure Swift 5.7 or later is installed, and follow the commands to start fetching data.
-
-## Environment Variables in Xcode
-
-To securely access the PandaScore API, which powers the package, you'll need to use an API token. Upon signing up with PandaScore, you're given a unique token.
-
-### Setting Up Environment Variables in Xcode
-
-1. **Create an Environment Variable for Your Token**: Open your project in Xcode, select your application target, and go to the "Edit Scheme" menu. Under the "Run" section, find the "Arguments" tab. Here, you can add environment variables. Create a new variable named `PANDASCORE_API_TOKEN` and set its value to your PandaScore API token.
-
-The package will look for this key in the code, so that's all you need to do manually, for now...
+### Setting Up PANDA_TOKEN
+1. Sign up for a PandaScore API account to get your token
+2. Set the environment variable:
+   ```bash
+   export PANDA_TOKEN=your_token_here
+   ```
+   
+### Setting Up in Xcode
+1. Open your project in Xcode
+2. Select your target
+3. Go to "Edit Scheme"
+4. Under "Run" > "Arguments", add an environment variable named `PANDA_TOKEN`
+5. Set its value to your PandaScore API token
 
 ## Contribution
-
-StarCraftKit is under development, contributions are welcome. If you have ideas for improvements, find a bug, or want to add new features, feel free to open an issue or submit a pull request.
-
-## License
-
-StarCraftKit is released under the MIT License.
+StarCraftKit is under active development, and contributions are welcome. If you have ideas for improvements, find a bug, or want to add new features, feel free to open an issue or submit a pull request.
