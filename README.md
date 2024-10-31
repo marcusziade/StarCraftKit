@@ -27,40 +27,9 @@ import StarCraftKit
 ```
 
 ## Terminal User Interface (TUI)
-
 ![CleanShot 2024-10-29 at 21 36 49@2x](https://github.com/user-attachments/assets/b99db46c-71e3-48e1-9db4-952730e0d427)
-
 StarCraftTUI II is an interactive terminal-based interface built with the StarCraftKit package. It provides a user-friendly way to access StarCraft II professional scene data through a navigable menu system.
 
-### Installation
-
-The TUI is included as an optional executable target in the package. To use it, you have two options:
-
-1. **Build from Source**:
-   ```bash
-   git clone https://github.com/marcusziade/StarCraftKit.git
-   cd StarCraftKit
-   swift build
-   .build/debug/StarCraftCLI
-   ```
-
-2. **Include in Your Project**:
-   If you want to include the CLI tool in your project, add both StarCraftKit and its CLI to your dependencies:
-   ```swift
-   dependencies: [
-       .package(url: "https://github.com/marcusziade/StarCraftKit.git", from: "1.0.0")
-   ],
-   targets: [
-       .executableTarget(
-           name: "YourTarget",
-           dependencies: [
-               .product(name: "StarCraftCLI", package: "StarCraftKit")
-           ]
-       )
-   ]
-   ```
-
-Note: The CLI tool has an additional dependency on VimTerminalKit for the interface, but this is only required if you're using the CLI. The main StarCraftKit library can be used independently without this additional dependency.
 
 ### Features
 - Interactive command menu with keyboard navigation
