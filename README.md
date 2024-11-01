@@ -1,6 +1,8 @@
 # StarCraftKit
 
 ![starcraftkit-logo](https://github.com/user-attachments/assets/f4957de4-2f41-49ef-8488-67df09731ac7)<br>
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmarcusziade%2FStarCraftKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/marcusziade/StarCraftKit)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmarcusziade%2FStarCraftKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/marcusziade/StarCraftKit)
 <a href="https://wakatime.com/badge/user/52d828f5-807b-496a-bfc0-5dbef43c05e5/project/018de122-9301-4e14-a56f-4a6e87034a5d"><img src="https://wakatime.com/badge/user/52d828f5-807b-496a-bfc0-5dbef43c05e5/project/018de122-9301-4e14-a56f-4a6e87034a5d.svg" alt="wakatime"></a>
 
 
