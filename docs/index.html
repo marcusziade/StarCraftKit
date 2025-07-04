@@ -606,22 +606,26 @@ brew install starcraft-cli</code>
                         </svg>
                         <div>
                             <h3>Other Linux</h3>
-                            <span class="os-badge">Binary</span>
+                            <span class="os-badge">Build from Source</span>
                         </div>
                     </div>
                     <div class="install-command">
-                        <code># Download latest release
-curl -L https://github.com/marcusziade/StarCraftKit/releases/latest/download/starcraft-cli-linux.tar.gz -o starcraft-cli.tar.gz
-# Extract
-tar xz -f starcraft-cli.tar.gz</code>
-                        <button class="copy-btn" onclick="navigator.clipboard.writeText('curl -L https://github.com/marcusziade/StarCraftKit/releases/latest/download/starcraft-cli-linux.tar.gz -o starcraft-cli.tar.gz && tar xz -f starcraft-cli.tar.gz')">
+                        <code># Install Swift (if needed)
+curl -s https://swift.org/install.sh | bash
+
+# Build from source
+git clone https://github.com/marcusziade/StarCraftKit
+cd StarCraftKit
+swift build -c release --product starcraft-cli
+sudo cp .build/release/starcraft-cli /usr/local/bin/</code>
+                        <button class="copy-btn" onclick="navigator.clipboard.writeText('curl -s https://swift.org/install.sh | bash && git clone https://github.com/marcusziade/StarCraftKit && cd StarCraftKit && swift build -c release --product starcraft-cli && sudo cp .build/release/starcraft-cli /usr/local/bin/')">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
                         </button>
                     </div>
-                    <p class="os-description">Download and extract the latest binary</p>
+                    <p class="os-description">Build from source for best compatibility</p>
                 </div>
             </div>
             
