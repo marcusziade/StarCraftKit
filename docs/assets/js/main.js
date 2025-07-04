@@ -225,17 +225,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const userAgent = navigator.userAgent.toLowerCase();
         const platform = navigator.platform.toLowerCase();
         
-        let installCommand = 'brew install marcusziade/tap/starcraft-cli'; // default
+        let installCommand = 'yay -S starcraft-cli'; // default to AUR
         
-        // Check for Arch Linux
-        if (userAgent.includes('arch') || userAgent.includes('manjaro')) {
-            installCommand = 'yay -S starcraft-cli';
+        // Check for macOS
+        if (platform.includes('mac')) {
+            installCommand = 'brew tap marcusziade/tap && brew install starcraft-cli';
         }
-        // Check for other Linux
-        else if (platform.includes('linux') || userAgent.includes('linux')) {
-            installCommand = 'wget -qO- github.com/marcusziade/StarCraftKit/releases/latest/download/starcraft-cli-linux.tar.gz | tar xz';
-        }
-        // macOS is default
         
         installCommandEl.textContent = installCommand;
     }
