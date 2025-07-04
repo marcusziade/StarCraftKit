@@ -235,8 +235,9 @@ code, pre {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
 }
 
 .quick-start h3 {
@@ -618,21 +619,25 @@ code, pre {
 }
 
 .cli-tabs {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.25rem;
     background: var(--bg-tertiary);
     border-bottom: 1px solid var(--border-color);
-    overflow-x: auto;
+    padding: 0.5rem;
 }
 
 .cli-tab {
-    padding: 1rem 1.5rem;
-    background: none;
-    border: none;
+    padding: 0.75rem 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
     font-weight: 500;
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.3s ease;
-    white-space: nowrap;
+    text-align: center;
+    font-size: 0.875rem;
 }
 
 .cli-tab:hover {
@@ -642,8 +647,9 @@ code, pre {
 
 .cli-tab.active {
     color: var(--sc2-blue);
-    background: var(--card-bg);
-    border-bottom: 2px solid var(--sc2-blue);
+    background: var(--bg-primary);
+    border-color: var(--sc2-blue);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 .cli-output {
@@ -863,11 +869,11 @@ code, pre {
     border-radius: 8px;
     padding: 1rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     margin-bottom: 0.75rem;
     position: relative;
-    overflow-x: auto;
+    overflow: hidden;
 }
 
 .install-command code {
@@ -875,8 +881,11 @@ code, pre {
     font-size: 0.8rem;
     color: var(--text-primary);
     user-select: all;
-    white-space: nowrap;
+    white-space: pre-wrap;
+    word-break: break-word;
     padding-right: 1rem;
+    display: block;
+    line-height: 1.5;
 }
 
 .copy-btn {
@@ -1289,6 +1298,18 @@ code, pre {
     /* Ensure all major sections don't overflow */
     .features, .sdk-section, .cli-section, .installation-section {
         overflow-x: hidden;
+    }
+    
+    /* CLI tabs responsive */
+    .cli-tabs {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+    
+    .cli-tab {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
     }
     
     .sdk-grid, .cli-showcase, .install-grid {
