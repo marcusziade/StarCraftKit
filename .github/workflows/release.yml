@@ -132,20 +132,20 @@ jobs:
           # Generate .SRCINFO
           makepkg --printsrcinfo > .SRCINFO || {
             # Fallback: manually create .SRCINFO if makepkg is not available
-            cat > .SRCINFO << EOF
-pkgbase = starcraft-cli
-	pkgdesc = Command-line tool for tracking StarCraft 2 esports
-	pkgver = ${VERSION}
-	pkgrel = 1
-	url = https://github.com/marcusziade/StarCraftKit
-	arch = x86_64
-	license = MIT
-	depends = glibc
-	source = starcraft-cli-${VERSION}.tar.gz::https://github.com/marcusziade/StarCraftKit/releases/download/${VERSION}/starcraft-cli-linux.tar.gz
-	sha256sums = ${LINUX_SHA256}
+            cat > .SRCINFO <<-EOF
+		pkgbase = starcraft-cli
+		pkgdesc = Command-line tool for tracking StarCraft 2 esports
+		pkgver = ${VERSION}
+		pkgrel = 1
+		url = https://github.com/marcusziade/StarCraftKit
+		arch = x86_64
+		license = MIT
+		depends = glibc
+		source = starcraft-cli-${VERSION}.tar.gz::https://github.com/marcusziade/StarCraftKit/releases/download/${VERSION}/starcraft-cli-linux.tar.gz
+		sha256sums = ${LINUX_SHA256}
 
-pkgname = starcraft-cli
-EOF
+		pkgname = starcraft-cli
+		EOF
           }
           
           # Configure git
