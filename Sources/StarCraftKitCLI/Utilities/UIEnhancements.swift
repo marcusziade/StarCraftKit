@@ -277,9 +277,9 @@ public extension TimeInterval {
         let seconds = Int(self) % 60
         
         if hours > 0 {
-            return "\(hours)h \(String(minutes).padding(toLength: 2, withPad: "0", startingAt: 0))m"
+            return "\(hours)h \(String(format: "%02d", minutes))m"
         } else if minutes > 0 {
-            return "\(minutes)m \(String(seconds).padding(toLength: 2, withPad: "0", startingAt: 0))s"
+            return "\(minutes)m \(String(format: "%02d", seconds))s"
         } else {
             return "\(seconds)s"
         }
