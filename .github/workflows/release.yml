@@ -6,42 +6,21 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'  # Triggers on version tags like 2.0.0
 
 jobs:
-  build:
-    name: Build ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
+  build-macos:
+    name: Build macOS
+    runs-on: macos-latest
     timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: macos-latest
-            name: macOS
-            artifact-name: StarCraftKit-macOS
-            build-args: "-c release --arch arm64 --arch x86_64"
-            executable-name: starcraft-cli
-          - os: ubuntu-latest
-            name: Linux
-            artifact-name: StarCraftKit-Linux
-            build-args: "-c release --static-swift-stdlib"
-            executable-name: starcraft-cli
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for changelog generation
+          fetch-depth: 0
       
       - name: Setup Swift
         uses: swift-actions/setup-swift@v2
         with:
           swift-version: "5.9.2"
-        continue-on-error: false
-      
-      - name: Verify Swift installation
-        run: |
-          echo "Swift path: $(which swift)"
-          echo "Swift version:"
-          swift --version
       
       - name: Cache SPM dependencies
         uses: actions/cache@v4
@@ -53,73 +32,56 @@ jobs:
       
       - name: Build release binary
         run: |
-          echo "::group::Build Configuration"
-          echo "OS: ${{ runner.os }}"
-          echo "Build args: ${{ matrix.build-args }}"
-          echo "::endgroup::"
-          
-          echo "::group::Resolving dependencies"
-          swift package resolve
-          echo "::endgroup::"
-          
-          echo "::group::Building release binary"
-          swift build ${{ matrix.build-args }} --product starcraft-cli
-          echo "::endgroup::"
+          echo "Building universal binary for macOS"
+          swift build -c release --arch arm64 --arch x86_64 --product starcraft-cli
       
-      - name: Test release binary
-        run: |
-          echo "::group::Testing binary execution"
-          .build/release/${{ matrix.executable-name }} --version || true
-          echo "::endgroup::"
-      
-      - name: Create distribution directory
+      - name: Create distribution
         run: |
           mkdir -p dist
-          cp .build/release/${{ matrix.executable-name }} dist/
-          
-          # Create a simple README for the distribution
-          cat > dist/README.md << 'EOF'
-          # StarCraftKit CLI
-
-          This is the command-line interface for StarCraftKit.
-
-          ## Installation
-
-          1. Extract the archive
-          2. Move the `starcraft-cli` binary to a location in your PATH
-          3. Make it executable (Unix only): `chmod +x starcraft-cli`
-          4. Run `starcraft-cli --help` to get started
-
-          ## Documentation
-
-          Visit https://github.com/marcusziade/StarCraftKit for full documentation.
-          EOF
-      
-      - name: Create archive
-        run: |
-          ARCHIVE_NAME="${{ matrix.artifact-name }}-${{ github.ref_name }}.tar.gz"
-          echo "Creating archive: $ARCHIVE_NAME"
-          tar -czf "$ARCHIVE_NAME" -C dist .
-          echo "Archive size: $(ls -lh "$ARCHIVE_NAME" | awk '{print $5}')"
-      
-      - name: Generate checksum
-        run: |
-          shasum -a 256 *.tar.gz > "${{ matrix.artifact-name }}-${{ github.ref_name }}.sha256"
-          echo "Checksum:"
-          cat "${{ matrix.artifact-name }}-${{ github.ref_name }}.sha256"
+          cp .build/release/starcraft-cli dist/
+          tar -czf "StarCraftKit-macOS-${{ github.ref_name }}.tar.gz" -C dist .
+          shasum -a 256 *.tar.gz > "StarCraftKit-macOS-${{ github.ref_name }}.sha256"
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact-name }}
+          name: StarCraftKit-macOS
           path: |
             *.tar.gz
             *.sha256
-          retention-days: 7
+
+  build-linux:
+    name: Build Linux (Docker)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Build in Docker
+        run: |
+          docker run --rm -v "$PWD:/workspace" -w /workspace swift:5.9.2 bash -c "
+            swift build -c release --static-swift-stdlib --product starcraft-cli && \
+            mkdir -p dist && \
+            cp .build/release/starcraft-cli dist/ && \
+            tar -czf StarCraftKit-Linux-${{ github.ref_name }}.tar.gz -C dist . && \
+            sha256sum *.tar.gz > StarCraftKit-Linux-${{ github.ref_name }}.sha256
+          "
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: StarCraftKit-Linux
+          path: |
+            *.tar.gz
+            *.sha256
 
   release:
     name: Create Release
-    needs: build
+    needs: [build-macos, build-linux]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -151,10 +113,6 @@ jobs:
           cat > release-notes.md << EOF
           # StarCraftKit $VERSION
 
-          ## What's Changed
-
-          See the [full changelog](https://github.com/${{ github.repository }}/compare/$(git describe --tags --abbrev=0 HEAD^)...$VERSION) for details.
-
           ## Installation
 
           ### macOS
@@ -185,6 +143,7 @@ jobs:
           prerelease: false
           name: StarCraftKit ${{ steps.release_notes.outputs.VERSION }}
           body_path: release-notes.md
+          generate_release_notes: true
           files: |
             artifacts/**/*.tar.gz
             artifacts/**/*.sha256

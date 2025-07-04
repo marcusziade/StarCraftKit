@@ -1,0 +1,2 @@
+# Handle files with special characters that are problematic on Windows
+docs/** -text
