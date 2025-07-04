@@ -94,3 +94,69 @@ jobs:
           git add Formula/starcraft-cli.rb
           git commit -m "Update starcraft-cli to ${VERSION}" || exit 0
           git push
+      
+      # Update AUR package
+      - name: Setup SSH for AUR
+        env:
+          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$AUR_SSH_PRIVATE_KEY" > ~/.ssh/aur_key
+          chmod 600 ~/.ssh/aur_key
+          ssh-keyscan -t rsa aur.archlinux.org >> ~/.ssh/known_hosts
+      
+      - name: Update AUR package
+        run: |
+          # Get version and checksum
+          VERSION="${GITHUB_REF#refs/tags/}"
+          LINUX_SHA256=$(sha256sum artifacts/starcraft-cli-linux/starcraft-cli-linux.tar.gz | cut -d' ' -f1)
+          
+          # Clone AUR package
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key" git clone ssh://aur@aur.archlinux.org/starcraft-cli.git aur-starcraft-cli || {
+            # If package doesn't exist yet, create it locally
+            mkdir -p aur-starcraft-cli
+            cd aur-starcraft-cli
+            git init
+            cd ..
+          }
+          
+          cd aur-starcraft-cli
+          
+          # Copy our PKGBUILD template
+          cp ../aur/starcraft-cli/PKGBUILD .
+          
+          # Update PKGBUILD with new version and checksum
+          sed -i "s/pkgver=.*/pkgver=${VERSION}/" PKGBUILD
+          sed -i "s/sha256sums=.*/sha256sums=('${LINUX_SHA256}')/" PKGBUILD
+          
+          # Generate .SRCINFO
+          makepkg --printsrcinfo > .SRCINFO || {
+            # Fallback: manually create .SRCINFO if makepkg is not available
+            cat > .SRCINFO << EOF
+pkgbase = starcraft-cli
+	pkgdesc = Command-line tool for tracking StarCraft 2 esports
+	pkgver = ${VERSION}
+	pkgrel = 1
+	url = https://github.com/marcusziade/StarCraftKit
+	arch = x86_64
+	license = MIT
+	depends = glibc
+	source = starcraft-cli-${VERSION}.tar.gz::https://github.com/marcusziade/StarCraftKit/releases/download/${VERSION}/starcraft-cli-linux.tar.gz
+	sha256sums = ${LINUX_SHA256}
+
+pkgname = starcraft-cli
+EOF
+          }
+          
+          # Configure git
+          git config user.name "Marcus Ziade"
+          git config user.email "marcusziade@me.com"
+          
+          # Commit and push
+          git add PKGBUILD .SRCINFO
+          git commit -m "Update to ${VERSION}" || exit 0
+          
+          # Push to AUR if we have the SSH key
+          if [ -f ~/.ssh/aur_key ]; then
+            GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key" git push origin master || echo "AUR push skipped - repository may not exist yet"
+          fi
