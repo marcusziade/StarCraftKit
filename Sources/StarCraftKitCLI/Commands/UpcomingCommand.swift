@@ -9,7 +9,7 @@ struct UpcomingCommand: AsyncParsableCommand {
         discussion: "View when matches will start with relative time displays"
     )
     
-    @Option(name: .shortAndLong, help: "Number of hours to look ahead")
+    @Option(name: .long, help: "Number of hours to look ahead")
     var hours: Int = 24
     
     @Option(name: .shortAndLong, help: "Filter by player name")
@@ -18,7 +18,7 @@ struct UpcomingCommand: AsyncParsableCommand {
     @Option(name: .shortAndLong, help: "Filter by tournament tier")
     var tier: String?
     
-    @Flag(name: .shortAndLong, help: "Show only premier tournaments")
+    @Flag(name: .long, help: "Show only premier tournaments")
     var premierOnly: Bool = false
     
     func run() async throws {
