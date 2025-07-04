@@ -147,23 +147,16 @@ struct TodayCommand: AsyncParsableCommand {
             // Format match
             let matchText = "\(flag1) \(TableFormatter.truncate(name1, to: 20)) \(scoreText) \(TableFormatter.truncate(name2, to: 20)) \(flag2)"
             
+            let statusCol = status.padding(toLength: 11, withPad: " ", startingAt: 0)
+            let matchCol = matchText.padding(toLength: 46, withPad: " ", startingAt: 0)
+            let boText = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : ""
+            let boCol = boText.padding(toLength: 5, withPad: " ", startingAt: 0)
+            
             if showTournament {
-                print(String(format: "%@ | %-11s | %-46s | %-5s | %-20s | %@",
-                    time,
-                    status,
-                    matchText,
-                    match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : "",
-                    TableFormatter.truncate(tournamentName, to: 20),
-                    streamInfo
-                ))
+                let tournamentCol = TableFormatter.truncate(tournamentName, to: 20)
+                print("\(time) | \(statusCol) | \(matchCol) | \(boCol) | \(tournamentCol) | \(streamInfo)")
             } else {
-                print(String(format: "  %@ | %-11s | %-46s | %-5s | %@",
-                    time,
-                    status,
-                    matchText,
-                    match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : "",
-                    streamInfo
-                ))
+                print("  \(time) | \(statusCol) | \(matchCol) | \(boCol) | \(streamInfo)")
             }
             
             // Show relative time for upcoming matches

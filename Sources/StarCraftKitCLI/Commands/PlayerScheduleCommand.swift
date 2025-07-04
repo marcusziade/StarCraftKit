@@ -129,16 +129,8 @@ struct PlayerScheduleCommand: AsyncParsableCommand {
             let vsText = "vs".gray
             let matchType = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : ""
             
-            print(String(format: "  %@ | %@ %@ %@ %@ %@ | %@ | %@",
-                beginAt.timeOnly,
-                flag,
-                player.displayName,
-                vsText,
-                opponentFlag,
-                opponentName,
-                TableFormatter.truncate(tournamentName, to: 30),
-                matchType
-            ))
+            let tournamentCol = TableFormatter.truncate(tournamentName, to: 30)
+            print("  \(beginAt.timeOnly) | \(flag) \(player.displayName) \(vsText) \(opponentFlag) \(opponentName) | \(tournamentCol) | \(matchType)")
             
             if match.isLive {
                 let streamLink = match.streams?.first.map { StreamFormatter.formatStreamLink($0.rawURL.absoluteString) } ?? "No stream"

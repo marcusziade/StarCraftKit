@@ -47,7 +47,8 @@ struct StatsCommand: AsyncParsableCommand {
         print("Hit Count:    \(stats.hitCount)")
         print("Miss Count:   \(stats.missCount)")
         print("Total:        \(stats.hitCount + stats.missCount)")
-        print("Hit Rate:     \(String(format: "%.1f", stats.hitRate * 100))%")
+        let hitRatePercent = (stats.hitRate * 100).rounded(toPlaces: 1)
+        print("Hit Rate:     \(hitRatePercent)%")
         print("Cache Size:   \(stats.currentSize) entries")
         print("=" * 40)
         

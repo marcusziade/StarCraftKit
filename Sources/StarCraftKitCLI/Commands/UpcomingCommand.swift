@@ -185,18 +185,13 @@ struct UpcomingCommand: AsyncParsableCommand {
                 coloredCountdown = countdown.gray
             }
             
-            print(String(format: "%@ %-12s | %@ %-20s vs %-20s %@ | %-6s | %-25s %@ %@",
-                time,
-                coloredCountdown,
-                flag1,
-                TableFormatter.truncate(name1, to: 20),
-                TableFormatter.truncate(name2, to: 20),
-                flag2,
-                matchType,
-                TableFormatter.truncate(tournamentName, to: 25),
-                tierBadge.brightYellow,
-                streamIcon
-            ))
+            let countdownCol = coloredCountdown.padding(toLength: 12, withPad: " ", startingAt: 0)
+            let name1Col = TableFormatter.truncate(name1, to: 20)
+            let name2Col = TableFormatter.truncate(name2, to: 20)
+            let matchTypeCol = matchType.padding(toLength: 6, withPad: " ", startingAt: 0)
+            let tournamentCol = TableFormatter.truncate(tournamentName, to: 25)
+            
+            print("\(time) \(countdownCol) | \(flag1) \(name1Col) vs \(name2Col) \(flag2) | \(matchTypeCol) | \(tournamentCol) \(tierBadge.brightYellow) \(streamIcon)")
             
             // Show day if not today
             if !beginAt.isToday {

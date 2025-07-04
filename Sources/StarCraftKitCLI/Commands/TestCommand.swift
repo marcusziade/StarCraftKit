@@ -155,7 +155,8 @@ struct TestCommand: AsyncParsableCommand {
             }
             
             let stats = await client.getCacheStatistics()
-            print("📊 Cache stats: \(stats.hitCount) hits, \(stats.missCount) misses, \(String(format: "%.1f", stats.hitRate * 100))% hit rate")
+            let hitRatePercent = (stats.hitRate * 100).rounded(toPlaces: 1)
+            print("📊 Cache stats: \(stats.hitCount) hits, \(stats.missCount) misses, \(hitRatePercent)% hit rate")
         }
         
         // Test Error Handling
@@ -196,7 +197,8 @@ struct TestCommand: AsyncParsableCommand {
         print("🏁 Test Summary:")
         print("✅ Passed: \(passedTests)")
         print("❌ Failed: \(failedTests)")
-        print("📊 Success Rate: \(String(format: "%.1f", Double(passedTests) / Double(passedTests + failedTests) * 100))%")
+        let successRate = (Double(passedTests) / Double(passedTests + failedTests) * 100).rounded(toPlaces: 1)
+        print("📊 Success Rate: \(successRate)%")
         
         if failedTests > 0 {
             throw ExitCode.failure

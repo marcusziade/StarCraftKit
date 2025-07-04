@@ -233,17 +233,11 @@ struct TournamentMatchesCommand: AsyncParsableCommand {
             // Format match type
             let matchType = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : ""
             
-            print(String(format: "%@ %@ | %-11s | %@ %-20s %@ %-20s %@ | %@",
-                date,
-                time,
-                status,
-                flag1,
-                TableFormatter.truncate(displayName1, to: 20),
-                scoreText,
-                TableFormatter.truncate(displayName2, to: 20),
-                flag2,
-                matchType
-            ))
+            let statusCol = status.padding(toLength: 11, withPad: " ", startingAt: 0)
+            let name1Col = TableFormatter.truncate(displayName1, to: 20)
+            let name2Col = TableFormatter.truncate(displayName2, to: 20)
+            
+            print("\(date) \(time) | \(statusCol) | \(flag1) \(name1Col) \(scoreText) \(name2Col) \(flag2) | \(matchType)")
             
             // Show stream link if live
             if match.isLive, let streams = match.streams, !streams.isEmpty {

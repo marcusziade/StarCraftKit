@@ -95,6 +95,7 @@ struct LiveCommand: AsyncParsableCommand {
                 let tournamentName = tournament?.name ?? "Unknown Tournament"
                 let tierBadge = tournament?.tier.map { " [\($0.uppercased())]".brightYellow } ?? ""
                 
+                
                 print("\n🏆 \(tournamentName)\(tierBadge)".bold())
                 print(TableFormatter.divider(140))
                 
@@ -142,6 +143,7 @@ struct LiveCommand: AsyncParsableCommand {
         let opponent1 = match.opponents[safe: 0]
         let opponent2 = match.opponents[safe: 1]
         
+        
         let (name1, flag1) = formatOpponent(opponent1)
         let (name2, flag2) = formatOpponent(opponent2)
         
@@ -161,21 +163,14 @@ struct LiveCommand: AsyncParsableCommand {
         let duration = match.beginAt.map { Date().timeIntervalSince($0).formattedDuration } ?? ""
         
         // Format the match line with index
-        let indexStr = String(format: "[%2d]", index)
-        print(String(format: "%@ %@ %-25s %@ %@-%@ %@ %-25s %@ | %-8s | %@ | %@",
-            indexStr.gray,
-            flag1,
-            TableFormatter.truncate(name1, to: 25),
-            score1 > score2 ? "►".brightGreen : " ",
-            "\(score1)".bold(),
-            "\(score2)".bold(),
-            score2 > score1 ? "◄".brightGreen : " ",
-            TableFormatter.truncate(name2, to: 25),
-            flag2,
-            matchType,
-            duration.gray,
-            streamInfo
-        ))
+        let indexStr = "[\(String(index).padding(toLength: 2, withPad: " ", startingAt: 0))]"
+        let truncatedName1 = TableFormatter.truncate(name1, to: 25)
+        let truncatedName2 = TableFormatter.truncate(name2, to: 25)
+        
+        // Use Swift string interpolation instead of C-style format
+        let matchTypePadded = matchType.isEmpty ? "        " : matchType + String(repeating: " ", count: max(0, 8 - matchType.count))
+        let output = "\(indexStr.gray) \(flag1) \(truncatedName1) \(score1 > score2 ? "►".brightGreen : " ") \(String(score1).bold())-\(String(score2).bold()) \(score2 > score1 ? "◄".brightGreen : " ") \(truncatedName2) \(flag2) | \(matchTypePadded) | \(duration.gray) | \(streamInfo)"
+        print(output)
         
         // Show game progress if detailed games available
         if !match.games.isEmpty {

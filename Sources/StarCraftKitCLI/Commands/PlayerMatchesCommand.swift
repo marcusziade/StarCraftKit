@@ -178,15 +178,12 @@ struct PlayerMatchesCommand: AsyncParsableCommand {
             }
             let durationStr = match.duration?.formattedDuration ?? "-"
             
-            print(String(format: "%@ | %@ %-20s | %-6s | %-5s | %-28s | %@",
-                dateStr,
-                opponentFlag,
-                TableFormatter.truncate(opponentName, to: 20),
-                resultStr,
-                scoreText,
-                TableFormatter.truncate(tournamentName, to: 28),
-                durationStr
-            ))
+            let opponentCol = TableFormatter.truncate(opponentName, to: 20)
+            let tournamentCol = TableFormatter.truncate(tournamentName, to: 28)
+            let resultCol = resultStr.padding(toLength: 6, withPad: " ", startingAt: 0)
+            let scoreCol = scoreText.padding(toLength: 5, withPad: " ", startingAt: 0)
+            
+            print("\(dateStr) | \(opponentFlag) \(opponentCol) | \(resultCol) | \(scoreCol) | \(tournamentCol) | \(durationStr)")
             
             // Show detailed game results if requested
             if detailed && !match.games.isEmpty {
@@ -209,8 +206,10 @@ struct PlayerMatchesCommand: AsyncParsableCommand {
             Double(gameWins) / Double(gameWins + gameLosses) * 100 : 0
         
         print("\n📊 Statistics:".bold())
-        print("  Match Record: \(wins)W - \(losses)L (\(String(format: "%.1f", winRate))% win rate)".cyan)
-        print("  Game Record: \(gameWins)W - \(gameLosses)L (\(String(format: "%.1f", gameWinRate))% win rate)".cyan)
+        let winRateStr = winRate.rounded(toPlaces: 1)
+        print("  Match Record: \(wins)W - \(losses)L (\(winRateStr)% win rate)".cyan)
+        let gameWinRateStr = gameWinRate.rounded(toPlaces: 1)
+        print("  Game Record: \(gameWins)W - \(gameLosses)L (\(gameWinRateStr)% win rate)".cyan)
         
         print("\n" + TableFormatter.footer(width: 120))
     }

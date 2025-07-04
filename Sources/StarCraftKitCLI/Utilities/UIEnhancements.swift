@@ -198,7 +198,9 @@ public struct TableFormatter {
     
     public static func truncate(_ text: String, to length: Int) -> String {
         if text.count <= length {
-            return text.padding(toLength: length, withPad: " ", startingAt: 0)
+            // Use a simple padding approach that preserves Unicode
+            let paddingNeeded = length - text.count
+            return text + String(repeating: " ", count: paddingNeeded)
         }
         return String(text.prefix(length - 3)) + "..."
     }
@@ -275,11 +277,11 @@ public extension TimeInterval {
         let seconds = Int(self) % 60
         
         if hours > 0 {
-            return String(format: "%dh %02dm", hours, minutes)
+            return "\(hours)h \(String(minutes).padding(toLength: 2, withPad: "0", startingAt: 0))m"
         } else if minutes > 0 {
-            return String(format: "%dm %02ds", minutes, seconds)
+            return "\(minutes)m \(String(seconds).padding(toLength: 2, withPad: "0", startingAt: 0))s"
         } else {
-            return String(format: "%ds", seconds)
+            return "\(seconds)s"
         }
     }
 }
@@ -332,5 +334,13 @@ public extension Series {
     var hasEnded: Bool {
         guard let endAt = endAt else { return false }
         return Date() > endAt
+    }
+}
+
+// MARK: - Double Extensions
+public extension Double {
+    func rounded(toPlaces places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
     }
 }
