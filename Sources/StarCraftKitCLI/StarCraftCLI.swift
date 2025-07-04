@@ -2,15 +2,7 @@ import ArgumentParser
 import Foundation
 import StarCraftKit
 
-// MARK: - Date Formatting Extensions
-extension Date {
-    var formattedString: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter.string(from: self)
-    }
-}
+// Date formatting moved to UIEnhancements.swift
 
 extension Int {
     var formattedString: String {
@@ -23,48 +15,72 @@ extension Int {
 @main
 struct StarCraftCLI: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "starcraft-cli",
-        abstract: "StarCraft 2 API testing CLI",
-        version: "1.0.0",
+        commandName: "starcraft",
+        abstract: "🎮 StarCraft 2 Pro Scene CLI - Track players, matches, and tournaments",
+        discussion: """
+        A powerful command-line tool for accessing StarCraft 2 esports data.
+        
+        GETTING STARTED:
+          1. Set your API key: export PANDA_TOKEN="your-api-key"
+          2. Check live matches: starcraft live
+          3. Find a player: starcraft search "Serral"
+          4. Track a player: starcraft player-schedule "Serral"
+        
+        COMMON WORKFLOWS:
+          • View today's matches: starcraft today
+          • Check upcoming matches: starcraft upcoming
+          • Find when a player plays next: starcraft player-schedule <name>
+          • View tournament bracket: starcraft tournament-matches <name>
+          • Search for anything: starcraft search <query>
+        
+        TIPS:
+          • Use --help with any command for more options
+          • Many commands support filtering and detailed views
+          • Live command supports auto-refresh with --watch
+        """,
+        version: "2.0.0",
         subcommands: [
-            LeaguesCommand.self,
-            MatchesCommand.self,
+            // Live tracking
+            LiveCommand.self,
+            TodayCommand.self,
+            UpcomingCommand.self,
+            
+            // Player commands
+            PlayerScheduleCommand.self,
+            PlayerMatchesCommand.self,
             PlayersCommand.self,
+            
+            // Tournament commands
+            TournamentMatchesCommand.self,
+            TournamentsCommand.self,
+            
+            // Search
+            SearchCommand.self,
+            
+            // Core entities
+            MatchesCommand.self,
             TeamsCommand.self,
             SeriesCommand.self,
-            TournamentsCommand.self,
+            LeaguesCommand.self,
+            
+            // Utilities
+            CacheCommand.self,
             TestCommand.self,
-            CacheCommand.self
+            DebugCommand.self
         ],
-        defaultSubcommand: TestCommand.self
+        defaultSubcommand: nil
     )
+    
+    func run() throws {
+        print(Self.helpMessage())
+    }
 }
 
 // MARK: - Configuration
 extension StarCraftClient.Configuration {
     static func fromEnvironment() throws -> Self {
-        guard let apiKey = ProcessInfo.processInfo.environment["PANDA_TOKEN"] else {
-            throw CLIError.missingAPIKey
-        }
-        
-        let authMethod: AuthMethod = ProcessInfo.processInfo.environment["AUTH_METHOD"] == "query" ? .queryParameter : .bearerToken
-        
-        return StarCraftClient.Configuration(apiKey: apiKey, authMethod: authMethod)
-    }
-}
-
-// MARK: - CLI Errors
-enum CLIError: LocalizedError {
-    case missingAPIKey
-    case invalidInput(String)
-    
-    var errorDescription: String? {
-        switch self {
-        case .missingAPIKey:
-            return "Missing API key. Set PANDA_TOKEN environment variable."
-        case .invalidInput(let message):
-            return "Invalid input: \(message)"
-        }
+        let context = try CLIContext.load()
+        return StarCraftClient.Configuration(apiKey: context.apiKey, authMethod: context.authMethod)
     }
 }
 

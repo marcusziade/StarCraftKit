@@ -22,7 +22,7 @@ struct TestCommand: AsyncParsableCommand {
         let client = StarCraftClient(configuration: config)
         
         print("🧪 StarCraft 2 API Test Suite")
-        print("=" * 50)
+        print(String(repeating: "=", count: 50))
         
         var passedTests = 0
         var failedTests = 0
@@ -47,7 +47,7 @@ struct TestCommand: AsyncParsableCommand {
             let liveMatches = try await client.getLiveMatches()
             print("✅ Fetched \(liveMatches.count) live matches")
             
-            let upcomingMatches = try await client.getUpcomingMatches()
+            let upcomingMatches = try await client.getMatches(MatchesRequest(endpoint: .upcoming, pageSize: 5))
             print("✅ Fetched \(upcomingMatches.count) upcoming matches")
             
             passedTests += 3
@@ -192,7 +192,7 @@ struct TestCommand: AsyncParsableCommand {
         }
         
         // Summary
-        print("\n" + "=" * 50)
+        print("\n" + String(repeating: "=", count: 50))
         print("🏁 Test Summary:")
         print("✅ Passed: \(passedTests)")
         print("❌ Failed: \(failedTests)")
