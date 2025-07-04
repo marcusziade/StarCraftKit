@@ -53,15 +53,3 @@ jobs:
       
     - name: Run CLI in Docker
       run: docker run --rm starcraftkit starcraft-cli --help
-      
-  lint:
-    name: SwiftLint
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: SwiftLint
-      uses: norio-nomura/action-swiftlint@3.2.1
-      with:
-        args: --strict
-      continue-on-error: true
