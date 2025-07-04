@@ -53,3 +53,4 @@ jobs:
         with:
           files: artifacts/**/*.tar.gz
           generate_release_notes: true
+          token: ${{ secrets.GH_TOKEN }}
