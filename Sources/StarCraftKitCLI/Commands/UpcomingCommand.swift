@@ -27,8 +27,8 @@ struct UpcomingCommand: AsyncParsableCommand {
         
         let endTime = Date().addingTimeInterval(TimeInterval(hours * 3600))
         
-        print("\n\(TableFormatter.header("⏰ UPCOMING MATCHES", width: 140))")
-        print("Next \(hours) hours | Current time: \(Date().formattedString)".gray)
+        print("\n⏰ UPCOMING MATCHES".bold())
+        print("Next \(hours)h | \(Date().formattedString)".gray)
         
         // Get upcoming matches
         let upcomingMatches = try await client.getMatches(MatchesRequest(endpoint: .upcoming, page: 1, pageSize: 100))
@@ -77,7 +77,6 @@ struct UpcomingCommand: AsyncParsableCommand {
             if let playerFilter = player {
                 print("   No matches found for player: \(playerFilter)".gray)
             }
-            print(TableFormatter.footer(width: 140))
             return
         }
         
@@ -109,37 +108,31 @@ struct UpcomingCommand: AsyncParsableCommand {
         
         // Display matches by time period
         if !next1Hour.isEmpty {
-            print("\n🔥 STARTING SOON (Next Hour)".brightRed.bold())
-            print(TableFormatter.divider(140))
+            print("\n🔥 STARTING SOON".brightRed.bold())
             displayMatchGroup(next1Hour, tournamentMap: tournamentMap)
         }
         
         if !next3Hours.isEmpty {
             print("\n⚡ Next 3 Hours".brightYellow.bold())
-            print(TableFormatter.divider(140))
             displayMatchGroup(next3Hours, tournamentMap: tournamentMap)
         }
         
         if !next6Hours.isEmpty {
             print("\n📅 Next 6 Hours".yellow.bold())
-            print(TableFormatter.divider(140))
             displayMatchGroup(next6Hours, tournamentMap: tournamentMap)
         }
         
         if !next12Hours.isEmpty {
             print("\n📆 Next 12 Hours".bold())
-            print(TableFormatter.divider(140))
             displayMatchGroup(next12Hours, tournamentMap: tournamentMap)
         }
         
         if !later.isEmpty && hours > 12 {
             print("\n🗓  Later".gray.bold())
-            print(TableFormatter.divider(140))
             displayMatchGroup(later, tournamentMap: tournamentMap)
         }
         
-        print("\n" + TableFormatter.footer(width: 140))
-        print("\n📊 Total: \(filteredMatches.count) matches in the next \(hours) hours".green)
+        print("\n📊 \(filteredMatches.count) matches in the next \(hours) hours".green)
         
         // Show next match time
         if let nextMatch = filteredMatches.first, let beginAt = nextMatch.beginAt {
@@ -185,17 +178,18 @@ struct UpcomingCommand: AsyncParsableCommand {
                 coloredCountdown = countdown.gray
             }
             
-            let countdownCol = coloredCountdown.padding(toLength: 12, withPad: " ", startingAt: 0)
-            let name1Col = TableFormatter.truncate(name1, to: 20)
-            let name2Col = TableFormatter.truncate(name2, to: 20)
-            let matchTypeCol = matchType.padding(toLength: 6, withPad: " ", startingAt: 0)
-            let tournamentCol = TableFormatter.truncate(tournamentName, to: 25)
+            // Compact format
+            let name1Short = TableFormatter.truncate(name1, to: 10)
+            let name2Short = TableFormatter.truncate(name2, to: 10)
+            let tournamentShort = TableFormatter.truncate(tournamentName, to: 12)
             
-            print("\(time) \(countdownCol) | \(flag1) \(name1Col) vs \(name2Col) \(flag2) | \(matchTypeCol) | \(tournamentCol) \(tierBadge.brightYellow) \(streamIcon)")
+            print("\(coloredCountdown) \(flag1) \(name1Short) vs \(name2Short) \(flag2) │ \(matchType) │ \(tournamentShort)\(tierBadge) \(streamIcon)")
             
-            // Show day if not today
+            // Show exact time and day if not today
             if !beginAt.isToday {
-                print("                    \(beginAt.dayOfWeek), \(beginAt.dateOnly)".gray)
+                print("  \(time) \(beginAt.dayOfWeek)".gray)
+            } else if timeInterval > 3600 {
+                print("  \(time)".gray)
             }
         }
     }

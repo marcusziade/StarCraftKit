@@ -50,7 +50,7 @@ struct TournamentMatchesCommand: AsyncParsableCommand {
                     selectedTournament.isPending ? "◯ Upcoming".yellow :
                     "✓ Finished".gray
         
-        print("\n\(TableFormatter.header("🏆 \(selectedTournament.name)\(tierBadge)", width: 140))")
+        print("\n🏆 \(selectedTournament.name)\(tierBadge)".bold())
         print("Status: \(status)")
         
         if let beginAt = selectedTournament.beginAt, let endAt = selectedTournament.endAt {
@@ -142,7 +142,6 @@ struct TournamentMatchesCommand: AsyncParsableCommand {
         
         // Display matches
         print("\n📋 MATCHES (\(allMatches.count) total)".bold())
-        print(TableFormatter.divider(140))
         
         if grouped {
             // Group by match name (which often contains round info)
@@ -179,7 +178,6 @@ struct TournamentMatchesCommand: AsyncParsableCommand {
         
         // Show tournament winner if finished
         if selectedTournament.hasEnded, let winnerID = selectedTournament.winnerID {
-            print("\n" + TableFormatter.divider(140))
             
             // Try to find winner info
             if let winnerMatch = allMatches.first(where: { match in
@@ -195,7 +193,6 @@ struct TournamentMatchesCommand: AsyncParsableCommand {
             }
         }
         
-        print("\n" + TableFormatter.footer(width: 140))
         
         // Summary
         let completedCount = allMatches.filter { $0.hasEnded }.count
@@ -207,9 +204,7 @@ struct TournamentMatchesCommand: AsyncParsableCommand {
     
     private func displayMatchList(_ matches: [StarCraftKit.Match]) {
         for match in matches {
-            let date = match.beginAt?.dateOnly ?? match.endAt?.dateOnly ?? "----"
             let time = match.beginAt?.timeOnly ?? "--:--"
-            let status = String.matchStatus(match.status.rawValue)
             
             // Get opponents
             let opponent1 = match.opponents[safe: 0]
@@ -233,18 +228,13 @@ struct TournamentMatchesCommand: AsyncParsableCommand {
             // Format match type
             let matchType = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : ""
             
-            let statusCol = status.padding(toLength: 11, withPad: " ", startingAt: 0)
-            let name1Col = TableFormatter.truncate(displayName1, to: 20)
-            let name2Col = TableFormatter.truncate(displayName2, to: 20)
+            // Compact format
+            let name1Short = TableFormatter.truncate(displayName1, to: 12)
+            let name2Short = TableFormatter.truncate(displayName2, to: 12)
+            let streamIcon = match.streams?.isEmpty == false ? "📺" : "  "
+            let statusIcon = match.isLive ? "●".brightGreen : (match.hasEnded ? "✓".gray : "○")
             
-            print("\(date) \(time) | \(statusCol) | \(flag1) \(name1Col) \(scoreText) \(name2Col) \(flag2) | \(matchType)")
-            
-            // Show stream link if live
-            if match.isLive, let streams = match.streams, !streams.isEmpty {
-                if let stream = streams.first {
-                    print("                                           📺 \(stream.rawURL.absoluteString)".gray)
-                }
-            }
+            print("\(statusIcon) \(time) \(flag1) \(name1Short) \(scoreText.padding(toLength: 5, withPad: " ", startingAt: 0)) \(name2Short) \(flag2) | \(matchType) \(streamIcon)")
         }
     }
     

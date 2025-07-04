@@ -66,7 +66,6 @@ struct PlayerScheduleCommand: AsyncParsableCommand {
         
         if playerMatches.isEmpty {
             print("\nNo upcoming matches found for \(player.displayName) in the next \(days) days.".yellow)
-            print(TableFormatter.footer(width: 100))
             return
         }
         
@@ -83,7 +82,6 @@ struct PlayerScheduleCommand: AsyncParsableCommand {
             if currentDay != dayString {
                 currentDay = dayString
                 print("\n\(dayString.bold()) - \(beginAt.dateOnly)")
-                print(TableFormatter.divider(100))
             }
             
             // Find opponent
@@ -126,18 +124,15 @@ struct PlayerScheduleCommand: AsyncParsableCommand {
             
             // Format match info
             let timeInfo = match.isLive ? "LIVE NOW".brightGreen : beginAt.relativeTime
-            let vsText = "vs".gray
-            let matchType = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : ""
+            let matchType = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : "Bo1"
             
-            let tournamentCol = TableFormatter.truncate(tournamentName, to: 30)
-            print("  \(beginAt.timeOnly) | \(flag) \(player.displayName) \(vsText) \(opponentFlag) \(opponentName) | \(tournamentCol) | \(matchType)")
+            // Compact format
+            let opponentShort = TableFormatter.truncate(opponentName, to: 12)
+            let tournamentShort = TableFormatter.truncate(tournamentName, to: 15)
+            let streamIcon = match.streams?.isEmpty == false ? "📺" : "  "
             
-            if match.isLive {
-                let streamLink = match.streams?.first.map { StreamFormatter.formatStreamLink($0.rawURL.absoluteString) } ?? "No stream"
-                print("    \(timeInfo) - \(streamLink)")
-            } else {
-                print("    \(timeInfo)".gray)
-            }
+            print("  \(beginAt.timeOnly) \(opponentFlag) \(opponentShort) │ \(matchType) │ \(tournamentShort) \(streamIcon)")
+            print("        \(timeInfo)".gray)
             
             // Show current score if live
             if match.isLive && !match.results.isEmpty {
@@ -147,7 +142,6 @@ struct PlayerScheduleCommand: AsyncParsableCommand {
             }
         }
         
-        print("\n" + TableFormatter.footer(width: 100))
-        print("\nFound \(playerMatches.count) matches for \(player.displayName) in the next \(days) days.".green)
+        print("\n📊 Found \(playerMatches.count) matches for \(player.displayName) in the next \(days) days.".green)
     }
 }

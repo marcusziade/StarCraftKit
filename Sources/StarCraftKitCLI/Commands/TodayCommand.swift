@@ -22,7 +22,7 @@ struct TodayCommand: AsyncParsableCommand {
         let context = try CLIContext.load()
         let client = StarCraftClient(configuration: StarCraftClient.Configuration(apiKey: context.apiKey, authMethod: context.authMethod))
         
-        print("\n\(TableFormatter.header("📅 TODAY'S MATCHES - \(Date().dateOnly)", width: 140))")
+        print("\n📅 TODAY'S MATCHES - \(Date().dateOnly)".bold())
         
         // Get all matches for today (past, running, upcoming)
         let calendar = Calendar.current
@@ -75,7 +75,6 @@ struct TodayCommand: AsyncParsableCommand {
         
         if todayMatches.isEmpty {
             print("\n❌ No matches scheduled for today.".yellow)
-            print(TableFormatter.footer(width: 140))
             return
         }
         
@@ -100,14 +99,11 @@ struct TodayCommand: AsyncParsableCommand {
                 let tierBadge = tournament?.tier.map { " [\($0.uppercased())]".brightYellow } ?? ""
                 
                 print("\n🏆 \(tournamentName)\(tierBadge)".bold())
-                print(TableFormatter.divider(140))
                 
                 displayMatchList(matches, tournamentMap: tournamentMap, showTournament: false)
             }
         } else {
             // Show all matches in chronological order
-            print("\nTime   | Status      | Match                                          | Score | Tournament            | Stream")
-            print(TableFormatter.divider(140))
             
             displayMatchList(todayMatches, tournamentMap: tournamentMap, showTournament: true)
         }
@@ -117,14 +113,12 @@ struct TodayCommand: AsyncParsableCommand {
         let liveCount = todayMatches.filter { $0.isLive }.count
         let upcomingCount = todayMatches.filter { $0.isPending }.count
         
-        print("\n" + TableFormatter.footer(width: 140))
-        print("\n📊 Summary: \(finishedCount) finished | \(liveCount) live | \(upcomingCount) upcoming".green)
+        print("\n📊 \(finishedCount) finished | \(liveCount) live | \(upcomingCount) upcoming".green)
     }
     
     private func displayMatchList(_ matches: [StarCraftKit.Match], tournamentMap: [Int: Tournament], showTournament: Bool) {
         for match in matches {
             let time = match.beginAt?.timeOnly ?? "--:--"
-            let status = String.matchStatus(match.status.rawValue)
             
             // Get opponents
             let opponent1 = match.opponents[safe: 0]
@@ -144,19 +138,19 @@ struct TodayCommand: AsyncParsableCommand {
             // Get stream
             let streamInfo = match.streams?.first.map { _ in "📺" } ?? " "
             
-            // Format match
-            let matchText = "\(flag1) \(TableFormatter.truncate(name1, to: 20)) \(scoreText) \(TableFormatter.truncate(name2, to: 20)) \(flag2)"
+            // Compact format
+            let name1Short = TableFormatter.truncate(name1, to: 12)
+            let name2Short = TableFormatter.truncate(name2, to: 12)
+            let boText = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : "Bo1"
             
-            let statusCol = status.padding(toLength: 11, withPad: " ", startingAt: 0)
-            let matchCol = matchText.padding(toLength: 46, withPad: " ", startingAt: 0)
-            let boText = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : ""
-            let boCol = boText.padding(toLength: 5, withPad: " ", startingAt: 0)
+            // Status indicator
+            let statusIcon = match.isLive ? "●".brightGreen : (match.hasEnded ? "✓".gray : "○")
             
             if showTournament {
-                let tournamentCol = TableFormatter.truncate(tournamentName, to: 20)
-                print("\(time) | \(statusCol) | \(matchCol) | \(boCol) | \(tournamentCol) | \(streamInfo)")
+                let tournamentShort = TableFormatter.truncate(tournamentName, to: 15)
+                print("\(statusIcon) \(time) \(flag1) \(name1Short) \(scoreText.padding(toLength: 5, withPad: " ", startingAt: 0)) \(name2Short) \(flag2) │ \(boText) │ \(tournamentShort) \(streamInfo)")
             } else {
-                print("  \(time) | \(statusCol) | \(matchCol) | \(boCol) | \(streamInfo)")
+                print("  \(statusIcon) \(time) \(flag1) \(name1Short) \(scoreText.padding(toLength: 5, withPad: " ", startingAt: 0)) \(name2Short) \(flag2) │ \(boText) \(streamInfo)")
             }
             
             // Show relative time for upcoming matches

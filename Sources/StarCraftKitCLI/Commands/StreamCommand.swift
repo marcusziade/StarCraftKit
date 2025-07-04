@@ -136,7 +136,6 @@ struct StreamCommand: AsyncParsableCommand {
         
         // Display results
         print("\n📺 Matches with Streams".bold())
-        print(TableFormatter.divider())
         
         for (index, (match, streams)) in matchesWithStreams.enumerated() {
             print()

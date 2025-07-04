@@ -37,7 +37,7 @@ struct PlayerMatchesCommand: AsyncParsableCommand {
         }
         
         let flag = CountryFlag.flag(for: player.nationality)
-        print("\n\(TableFormatter.header("\(flag) \(player.displayName)'s Recent Matches", width: 120))")
+        print("\n\(flag) \(player.displayName)'s Recent Matches".bold())
         
         // Get past matches
         let pastMatches = try await client.getMatches(MatchesRequest(
@@ -62,7 +62,6 @@ struct PlayerMatchesCommand: AsyncParsableCommand {
         
         if playerMatches.isEmpty {
             print("\nNo recent matches found for \(player.displayName).".yellow)
-            print(TableFormatter.footer(width: 120))
             return
         }
         
@@ -72,8 +71,6 @@ struct PlayerMatchesCommand: AsyncParsableCommand {
         var gameWins = 0
         var gameLosses = 0
         
-        print("\nDate       | Opponent              | Result | Score | Tournament                    | Duration")
-        print(TableFormatter.divider(120))
         
         for match in playerMatches {
             // Find opponent and result
@@ -178,12 +175,11 @@ struct PlayerMatchesCommand: AsyncParsableCommand {
             }
             let durationStr = match.duration?.formattedDuration ?? "-"
             
-            let opponentCol = TableFormatter.truncate(opponentName, to: 20)
-            let tournamentCol = TableFormatter.truncate(tournamentName, to: 28)
-            let resultCol = resultStr.padding(toLength: 6, withPad: " ", startingAt: 0)
-            let scoreCol = scoreText.padding(toLength: 5, withPad: " ", startingAt: 0)
+            // Compact format
+            let opponentShort = TableFormatter.truncate(opponentName, to: 12)
+            let tournamentShort = TableFormatter.truncate(tournamentName, to: 12)
             
-            print("\(dateStr) | \(opponentFlag) \(opponentCol) | \(resultCol) | \(scoreCol) | \(tournamentCol) | \(durationStr)")
+            print("\(dateStr) \(opponentFlag) \(opponentShort) \(scoreText.padding(toLength: 5, withPad: " ", startingAt: 0)) \(resultStr) | \(tournamentShort) | \(durationStr)")
             
             // Show detailed game results if requested
             if detailed && !match.games.isEmpty {
@@ -196,8 +192,6 @@ struct PlayerMatchesCommand: AsyncParsableCommand {
                 }
             }
         }
-        
-        print(TableFormatter.divider(120))
         
         // Show statistics
         let totalMatches = wins + losses

@@ -34,8 +34,8 @@ struct LiveCommand: AsyncParsableCommand {
                 print("\u{001B}[2J\u{001B}[H") // Clear screen and move cursor to top
             }
             
-            print("\n\(TableFormatter.header("🔴 LIVE MATCHES", width: 140))")
-            print("Last updated: \(Date().formattedString)".gray)
+            print("\n🔴 LIVE MATCHES".bold())
+            print("Updated: \(Date().formattedString)".gray)
             
             // Get running matches
             let runningMatches = try await client.getMatches(MatchesRequest(
@@ -59,8 +59,7 @@ struct LiveCommand: AsyncParsableCommand {
             
             if liveMatches.isEmpty {
                 print("\n❌ No live matches at the moment.".yellow)
-                print("\nTip: Use 'starcraft upcoming' to see when the next matches start.".gray)
-                print(TableFormatter.footer(width: 140))
+                print("Tip: Use 'starcraft upcoming' to see when the next matches start.".gray)
                 
                 if watch {
                     print("\nWatching for live matches... (Press Ctrl+C to stop)".gray)
@@ -97,7 +96,6 @@ struct LiveCommand: AsyncParsableCommand {
                 
                 
                 print("\n🏆 \(tournamentName)\(tierBadge)".bold())
-                print(TableFormatter.divider(140))
                 
                 for match in matches.sorted(by: { ($0.beginAt ?? Date()) < ($1.beginAt ?? Date()) }) {
                     matchIndex += 1
@@ -121,8 +119,7 @@ struct LiveCommand: AsyncParsableCommand {
                 }
             }
             
-            print("\n" + TableFormatter.footer(width: 140))
-            print("\n📊 Total: \(liveMatches.count) live matches".green)
+            print("\n📊 \(liveMatches.count) live \(liveMatches.count == 1 ? "match" : "matches")".green)
             
             if !allMatchesWithStreams.isEmpty && openStream == nil {
                 print("\nTip: Use --open-stream <number> to open a specific match stream".gray)
@@ -152,36 +149,38 @@ struct LiveCommand: AsyncParsableCommand {
         let score2 = match.results.first { $0.teamID == opponent2?.opponent.id }?.score ?? 0
         
         // Format match type
-        let matchType = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : ""
-        
-        // Get stream info
-        let streamInfo = match.streams?.first.map { stream in
-            StreamFormatter.formatStreamLink(stream.rawURL.absoluteString)
-        } ?? "No stream".gray
+        let matchType = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : "Bo1"
         
         // Calculate duration
-        let duration = match.beginAt.map { Date().timeIntervalSince($0).formattedDuration } ?? ""
+        let duration = match.beginAt.map { Date().timeIntervalSince($0).formattedDuration } ?? "--"
         
         // Format the match line with index
-        let indexStr = "[\(String(index).padding(toLength: 2, withPad: " ", startingAt: 0))]"
-        let truncatedName1 = TableFormatter.truncate(name1, to: 25)
-        let truncatedName2 = TableFormatter.truncate(name2, to: 25)
+        let indexStr = index < 10 ? "[ \(index)]" : "[\(index)]"
         
-        // Use Swift string interpolation instead of C-style format
-        let matchTypePadded = matchType.isEmpty ? "        " : matchType + String(repeating: " ", count: max(0, 8 - matchType.count))
-        let output = "\(indexStr.gray) \(flag1) \(truncatedName1) \(score1 > score2 ? "►".brightGreen : " ") \(String(score1).bold())-\(String(score2).bold()) \(score2 > score1 ? "◄".brightGreen : " ") \(truncatedName2) \(flag2) | \(matchTypePadded) | \(duration.gray) | \(streamInfo)"
-        print(output)
+        // Compact format
+        let score = "\(score1)-\(score2)".bold()
+        let arrow1 = score1 > score2 ? "►".brightGreen : " "
+        let arrow2 = score2 > score1 ? "◄".brightGreen : " "
+        
+        // Truncate names to fit in compact format
+        let name1Short = TableFormatter.truncate(name1, to: 12)
+        let name2Short = TableFormatter.truncate(name2, to: 12)
+        
+        let hasStream = !(match.streams?.isEmpty ?? true)
+        let streamIcon = hasStream ? "📺" : "  "
+        
+        print("\(indexStr.gray) \(flag1) \(name1Short)\(arrow1) \(score) \(arrow2)\(name2Short) \(flag2) │ \(matchType) │ \(duration.gray) │ \(streamIcon)")
         
         // Show game progress if detailed games available
         if !match.games.isEmpty {
             let completedGames = match.games.filter { $0.winner != nil }.count
             let progressBar = ProgressBar.create(current: completedGames, total: match.numberOfGames, width: 10)
-            print("    Game Progress: \(progressBar)".gray)
+            print("     Progress: \(progressBar) \(completedGames)/\(match.numberOfGames)".gray)
         }
         
-        // Show stream URL if available
+        // Show stream URL if available  
         if let stream = match.streams?.first {
-            print("    📺 \(stream.rawURL.absoluteString)".gray)
+            print("     Stream: \(stream.rawURL.absoluteString)".gray)
         }
     }
     

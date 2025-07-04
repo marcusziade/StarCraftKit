@@ -24,14 +24,13 @@ struct SearchCommand: AsyncParsableCommand {
         
         let searchTypes = type.lowercased() == "all" ? ["player", "team", "tournament"] : [type.lowercased()]
         
-        print("\n\(TableFormatter.header("🔍 SEARCH RESULTS FOR: \"\(query)\"", width: 120))")
+        print("\n🔍 SEARCH RESULTS FOR: \"\(query)\"".bold())
         
         var totalResults = 0
         
         // Search Players
         if searchTypes.contains("player") {
             print("\n👤 PLAYERS".bold())
-            print(TableFormatter.divider(120))
             
             let players = try await client.searchPlayers(name: query)
             
@@ -77,7 +76,6 @@ struct SearchCommand: AsyncParsableCommand {
         // Search Teams
         if searchTypes.contains("team") {
             print("\n👥 TEAMS".bold())
-            print(TableFormatter.divider(120))
             
             let teams = try await client.searchTeams(name: query)
             
@@ -130,7 +128,6 @@ struct SearchCommand: AsyncParsableCommand {
         // Search Tournaments
         if searchTypes.contains("tournament") {
             print("\n🏆 TOURNAMENTS".bold())
-            print(TableFormatter.divider(120))
             
             let tournaments = try await client.getTournaments(TournamentsRequest(
                 page: 1,
@@ -194,7 +191,6 @@ struct SearchCommand: AsyncParsableCommand {
             }
         }
         
-        print("\n" + TableFormatter.footer(width: 120))
         
         if totalResults == 0 {
             print("\n❌ No results found for \"\(query)\"".yellow)
