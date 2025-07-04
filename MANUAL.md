@@ -95,28 +95,18 @@ starcraft live [options]
 
 #### Example Output
 ```
-┌────────────────────────────── 🔴 LIVE MATCHES ──────────────────────────────┐
-Last updated: 2025-07-04 14:35
+🔴 LIVE MATCHES (Last updated: 14:35)
 
-🏆 ESL Pro Tour 2025 - Summer [PREMIER]
-──────────────────────────────────────────────────────────────────────────────
-[ 1] 🇰🇷 Cure                        ► 2-0 ◄ 🇮🇹 Reynor                      | Bo5     | 32m 15s | 📺 Twitch
-    Game Progress: [██░░░░░░░░] 40%
-    📺 https://www.twitch.tv/esl_sc2
+● ESL Pro Tour - Summer                             32m 15s │ Bo5
+  🇰🇷 Cure             2-0  🇮🇹 Reynor                       │ 📺 twitch.tv/esl_sc2
+  
+● GSL 2025 Season 2                                 28m 42s │ Bo5  
+  🇰🇷 Dark             1-1  🇰🇷 Maru                         │ 📺 twitch.tv/gsl
+  
+● DreamHack Summer                                  45m 30s │ Bo7
+  🇫🇮 Serral           3-0  🇫🇷 Clem                         │ No stream
 
-[ 2] 🇰🇷 Dark                        ► 1-1 ◄ 🇰🇷 Maru                        | Bo5     | 28m 42s | 📺 Twitch
-    Game Progress: [████░░░░░░] 40%
-    📺 https://www.twitch.tv/gsl
-
-🏆 DreamHack Summer 2025 [MAJOR]
-──────────────────────────────────────────────────────────────────────────────
-[ 3] 🇫🇮 Serral                      ► 3-0 ◄ 🇫🇷 Clem                        | Bo7     | 45m 30s | No stream
-
-└──────────────────────────────────────────────────────────────────────────────┘
-
-📊 Total: 3 live matches
-
-Tip: Use --open-stream <number> to open a specific match stream
+Total: 3 live matches
 ```
 
 </details>
@@ -414,26 +404,21 @@ starcraft matches [options]
 
 #### Example Output
 ```
-┌─────────────────────── STARCRAFT 2 MATCHES ───────────────────────┐
+STARCRAFT 2 MATCHES (Page 1/50)
 
-Page 1 of 50 (Total: 1000+ matches)
+● LIVE
+#1203145  🇰🇷 Cure         2-0  🇮🇹 Reynor       │ Bo5 │ ESL Pro Tour
+#1203146  🇰🇷 Dark         1-1  🇰🇷 Maru         │ Bo5 │ GSL 2025 S2
 
-🔴 LIVE MATCHES
-──────────────────────────────────────────────────────────────────
-#1203145  | 🇰🇷 Cure  2-0  🇮🇹 Reynor | Bo5 | ESL Pro Tour Summer
-#1203146  | 🇰🇷 Dark  1-1  🇰🇷 Maru   | Bo5 | GSL 2025 Season 2
+○ UPCOMING  
+#1203147  🇫🇮 Serral       vs   🇫🇷 Clem         │ Bo7 │ DreamHack      │ in 1h
+#1203148  🇰🇷 Rogue        vs   🇰🇷 Stats        │ Bo5 │ GSL 2025 S2    │ in 3h
 
-⏰ UPCOMING MATCHES
-──────────────────────────────────────────────────────────────────
-#1203147  | 🇫🇮 Serral  vs  🇫🇷 Clem    | Bo7 | DreamHack Summer | in 1h
-#1203148  | 🇰🇷 Rogue   vs  🇰🇷 Stats   | Bo5 | GSL 2025 S2      | in 3h
+✓ RECENT
+#1203144  🇰🇷 ByuN         2-3  🇰🇷 herO         │ Bo5 │ GSL 2025 S2    │ 2h ago
+#1203143  🇰🇷 Solar        3-1  🇰🇷 Bunny        │ Bo5 │ GSL 2025 S2    │ 4h ago
 
-✅ RECENT RESULTS
-──────────────────────────────────────────────────────────────────
-#1203144  | 🇰🇷 ByuN  2-3  🇰🇷 herO    | Bo5 | GSL 2025 S2      | 2h ago
-#1203143  | 🇰🇷 Solar 3-1  🇰🇷 Bunny   | Bo5 | GSL 2025 S2      | 4h ago
-
-Navigation: Use --page 2 for next page
+Use --page 2 for next page
 ```
 
 </details>
@@ -458,31 +443,18 @@ starcraft players [options]
 
 #### Example Output
 ```
-┌──────────────────────── STARCRAFT 2 PLAYERS ─────────────────────────┐
+STARCRAFT 2 PLAYERS (150 found, Page 1/8)
 
-Found 150 active players (Page 1 of 8)
+🇫🇮 Serral        │ ENCE        │ Zerg    │ 45W-8L  (84.9%)
+🇰🇷 Maru          │ Team NV     │ Terran  │ 38W-12L (76.0%)
+🇫🇷 Clem          │ Team Liquid │ Terran  │ 42W-15L (73.7%)
+🇰🇷 Dark          │ Team NV     │ Zerg    │ 35W-18L (66.0%)
+🇮🇹 Reynor        │ Shopify     │ Zerg    │ 40W-14L (74.1%)
+🇰🇷 Rogue         │ Alpha X     │ Zerg    │ 33W-17L (66.0%)
+🇰🇷 Stats         │ Alpha X     │ Protoss │ 30W-20L (60.0%)
+🇰🇷 herO          │ Root Gaming │ Protoss │ 35W-15L (70.0%)
 
-TOP PLAYERS
-──────────────────────────────────────────────────────────────────────
-🇫🇮 Serral (Joona Sotala)
-   Team: ENCE | Age: 25 | Race: Zerg
-   Recent: 45W - 8L (84.9% win rate)
-   
-🇰🇷 Maru (Cho Sung-choo)
-   Team: Team NV | Age: 26 | Race: Terran
-   Recent: 38W - 12L (76.0% win rate)
-   
-🇫🇷 Clem (Clément Desplanches)
-   Team: Team Liquid | Age: 21 | Race: Terran
-   Recent: 42W - 15L (73.7% win rate)
-   
-🇰🇷 Dark (Park Ryung-woo)
-   Team: Team NV | Age: 28 | Race: Zerg
-   Recent: 35W - 18L (66.0% win rate)
-
-[... more players ...]
-
-Filters: Use --nationality KR for Korean players only
+Use --nationality KR for Korean players only
 ```
 
 </details>
@@ -506,32 +478,19 @@ starcraft teams [options]
 
 #### Example Output
 ```
-┌───────────────────────── STARCRAFT 2 TEAMS ──────────────────────────┐
+STARCRAFT 2 TEAMS (Page 1/3)
 
-Active Teams (Page 1 of 3)
+Team Liquid      │ 📍 Netherlands │ 4 players │ teamliquid.com
+  🇫🇷 Clem (T)   🇳🇱 uThermal (T)   🇺🇸 Neeb (P)   🇩🇪 HeRoMaRinE (T)
 
-🏆 Team Liquid
-──────────────────────────────────────────────────────────────────────
-📍 Netherlands | Founded: 2000
-👥 4 SC2 Players | 🌐 teamliquid.com
+Team NV          │ 📍 South Korea │ 3 players
+  🇰🇷 Maru (T)   🇰🇷 Dark (Z)   🇰🇷 Bunny (T)
 
-Current Roster:
-• 🇫🇷 Clem (Terran) - Main Player
-• 🇳🇱 uThermal (Terran)
-• 🇺🇸 Neeb (Protoss)
-• 🇩🇪 HeRoMaRinE (Terran)
+ENCE             │ 📍 Finland     │ 1 player
+  🇫🇮 Serral (Z)
 
-🏆 Team NV (Naver)
-──────────────────────────────────────────────────────────────────────
-📍 South Korea | Founded: 2016
-👥 3 SC2 Players
-
-Current Roster:
-• 🇰🇷 Maru (Terran) - Team Captain
-• 🇰🇷 Dark (Zerg)
-• 🇰🇷 Bunny (Terran)
-
-[... more teams ...]
+Shopify Rebels   │ 📍 Canada      │ 2 players  
+  🇮🇹 Reynor (Z)   🇨🇦 Scarlett (Z)
 ```
 
 </details>
@@ -555,35 +514,18 @@ starcraft tournaments [options]
 
 #### Example Output
 ```
-┌─────────────────── STARCRAFT 2 TOURNAMENTS ──────────────────────┐
+STARCRAFT 2 TOURNAMENTS
 
-🔴 ONGOING TOURNAMENTS
-──────────────────────────────────────────────────────────────────
-GSL 2025 Season 2 [PREMIER]
-💰 $150,000 | 📅 June 15 - July 20 | 📍 Seoul, Korea
-Status: Round of 16 | 32 players | GSL Format
+● ONGOING
+GSL 2025 S2      │ $150,000 │ Jun 15-Jul 20 │ Seoul      │ RO16
+DreamHack Sum... │ $50,000  │ Jul 1-7       │ Jönköping  │ QF
 
-DreamHack Summer 2025 [MAJOR]
-💰 $50,000 | 📅 July 1-7 | 📍 Jönköping, Sweden
-Status: Quarterfinals | 64 players | Double Elimination
+○ UPCOMING  
+IEM Katowice     │ $500,000 │ Aug 15-25     │ Poland     │ in 41d
+GSL Super Tour.. │ $100,000 │ Aug 1-10      │ Seoul      │ in 27d
 
-⏰ UPCOMING TOURNAMENTS
-──────────────────────────────────────────────────────────────────
-IEM Katowice 2025 [PREMIER]
-💰 $500,000 | 📅 August 15-25 | 📍 Katowice, Poland
-Opens in: 41 days | 24 invited + 8 qualified
-
-GSL Super Tournament [PREMIER]
-💰 $100,000 | 📅 August 1-10 | 📍 Seoul, Korea
-Opens in: 27 days | 16 invited players
-
-✅ RECENT TOURNAMENTS
-──────────────────────────────────────────────────────────────────
-ESL Pro Tour 2025 - Spring [PREMIER]
-💰 $200,000 | Winner: 🇫🇮 Serral
-June 1-10 | 16 players | Single Elimination
-
-[... more tournaments ...]
+✓ RECENT
+ESL Pro Tour Sp. │ $200,000 │ Jun 1-10      │ 🏆 Serral   │ Finished
 ```
 
 </details>
@@ -606,28 +548,12 @@ starcraft series [options]
 
 #### Example Output
 ```
-┌──────────────────── STARCRAFT 2 SERIES ─────────────────────────┐
+STARCRAFT 2 SERIES - 2025
 
-2025 SERIES
-──────────────────────────────────────────────────────────────────
-GSL 2025
-• 3 Seasons + 1 Super Tournament
-• Total Prize Pool: $550,000
-• March - November 2025
-
-ESL Pro Tour 2025
-• 4 Masters Events + 1 Championship
-• Total Prize Pool: $1,000,000
-• Circuit Points System
-• January - December 2025
-
-DreamHack SC2 Masters 2025
-• 6 Events across Europe/NA
-• Total Prize Pool: $300,000
-• Open Registration
-• Year-round
-
-[... more series ...]
+GSL 2025              │ $550,000  │ 3 seasons + 1 super │ Mar-Nov
+ESL Pro Tour 2025     │ $1,000,000│ 4 masters + 1 champ │ Jan-Dec  
+DreamHack Masters     │ $300,000  │ 6 events EU/NA      │ Year-round
+WTL 2025              │ $180,000  │ Team league         │ Apr-Oct
 ```
 
 </details>
@@ -650,26 +576,12 @@ starcraft leagues [options]
 
 #### Example Output
 ```
-┌──────────────────── STARCRAFT 2 LEAGUES ─────────────────────────┐
+STARCRAFT 2 LEAGUES
 
-ACTIVE LEAGUES
-──────────────────────────────────────────────────────────────────
-Global StarCraft II League (GSL)
-📍 South Korea | Founded: 2010
-🏆 Premier League | AfreecaTV Production
-Current: GSL 2025 S2
-
-ESL Pro Tour
-📍 International | Founded: 2020
-🏆 Premier Circuit | ESL Gaming
-Current: 2025 Season
-
-DreamHack
-📍 International | Founded: 2012
-🏆 Major Circuit | DreamHack AB
-Current: Summer 2025
-
-[... more leagues ...]
+GSL               │ 📍 South Korea  │ Since 2010 │ AfreecaTV   
+ESL Pro Tour      │ 📍 International│ Since 2020 │ ESL Gaming
+DreamHack         │ 📍 International│ Since 2012 │ DreamHack AB
+WTL               │ 📍 International│ Since 2020 │ Team League
 ```
 
 </details>
@@ -709,13 +621,12 @@ starcraft export <data-type> [options]
   Filtering by player: Serral
   Exporting 25 matches...
 ✅ Export complete: serral_matches.csv
-📄 Format: CSV
-📊 Size: 4.2 KB
+📄 Format: CSV │ Size: 4.2 KB
 
-Sample CSV content:
-ID,Name,Status,Date,Player1,Player2,Score1,Score2,Winner,Duration
-1203138,"Grand final: Serral vs Clem",finished,2025-07-03 20:00,"Serral","Clem",4,3,"Serral",62m 45s
-1203125,"Semifinal: Serral vs Maru",finished,2025-07-02 18:00,"Serral","Maru",3,1,"Serral",48m 12s
+Sample:
+ID,Date,Player1,Player2,Score,Tournament,Duration
+1203138,2025-07-03,Serral,Clem,4-3,DreamHack Final,62m
+1203125,2025-07-02,Serral,Maru,3-1,DreamHack SF,48m
 ```
 
 </details>
@@ -742,30 +653,17 @@ starcraft stream [options]
 
 #### Example Output
 ```
-🔍 Finding matches with streams...
+📺 MATCHES WITH STREAMS
 
-📺 Matches with Streams
-────────────────────────────────────────────────────────────────
-
-● LIVE GSL 2025 Season 2 - Round of 16
+● LIVE - GSL 2025 S2 RO16                           Started 32m ago
   🇰🇷 Maru vs 🇰🇷 Dark
-  Started: 32m ago
-  Streams:
-    📺 Twitch (EN) [Official] [Main]
-    https://www.twitch.tv/gsl
-    📺 Twitch (KR) [Official]
-    https://www.twitch.tv/gsl_kr
-    📺 YouTube (EN)
-    https://youtube.com/watch?v=abc123
+  📺 twitch.tv/gsl (EN) │ twitch.tv/gsl_kr (KR) │ youtube.com/gsl
 
-◯ Upcoming ESL Pro Tour - Quarterfinals
-  🇫🇮 Serral vs 🇫🇷 Clem
-  Starts: in 1h 25m (16:00 Jul 04)
-  Streams:
-    📺 Twitch (EN) [Official] [Main]
-    https://www.twitch.tv/esl_sc2
+○ UPCOMING - ESL Pro Tour QF                       in 1h 25m (16:00)
+  🇫🇮 Serral vs 🇫🇷 Clem  
+  📺 twitch.tv/esl_sc2 (EN)
 
-Tip: Use --open to automatically open the first stream
+Use --open to auto-open the first stream
 ```
 
 </details>
@@ -789,19 +687,16 @@ starcraft cache stats
 #### Example Output
 ```
 📊 CACHE STATISTICS
-──────────────────────────────────────────────────────────────────
-Cache Status: Active
-Hit Rate: 78.4% (412 hits / 526 requests)
-Current Size: 45 entries
-Memory Usage: ~2.1 MB
 
-Recent Activity:
-• Players API: 85% hit rate
-• Matches API: 72% hit rate
-• Tournaments API: 81% hit rate
+Status: Active │ Hit Rate: 78.4% (412/526)
+Size: 45 entries │ Memory: ~2.1 MB
 
-Last cleared: 2 hours ago
-Auto-cleanup: Enabled (expires after 15 min)
+API Hit Rates:
+• Players:     85%
+• Matches:     72%  
+• Tournaments: 81%
+
+Last cleared: 2h ago │ TTL: 15 min
 ```
 
 </details>
@@ -825,22 +720,18 @@ starcraft test [options]
 
 #### Example Output
 ```
-🧪 TESTING STARCRAFT API ENDPOINTS
-──────────────────────────────────────────────────────────────────
-✅ Leagues endpoint: OK (245ms)
-✅ Series endpoint: OK (189ms)
-✅ Tournaments endpoint: OK (156ms)
-✅ Matches endpoint: OK (203ms)
-✅ Teams endpoint: OK (167ms)
-✅ Players endpoint: OK (178ms)
+🧪 TESTING API ENDPOINTS
 
-Cache Tests:
-✅ Cache write: OK
-✅ Cache read: OK
-✅ Cache expiration: OK
+✓ Leagues:     OK (245ms)
+✓ Series:      OK (189ms)
+✓ Tournaments: OK (156ms)
+✓ Matches:     OK (203ms)
+✓ Teams:       OK (167ms)
+✓ Players:     OK (178ms)
 
-All tests passed! ✨
-API Response Time: 189ms average
+Cache: ✓ Write ✓ Read ✓ Expiration
+
+All tests passed! │ Avg: 189ms
 ```
 
 </details>
@@ -863,11 +754,9 @@ starcraft debug [--type <endpoint>]
 #### Example Output
 ```
 🔍 DEBUG: Matches Endpoint
-──────────────────────────────────────────────────────────────────
-Request URL: https://api.pandascore.co/starcraft2/matches/running
-Headers:
-  Authorization: Bearer [REDACTED]
-  Accept: application/json
+
+URL: api.pandascore.co/starcraft2/matches/running
+Auth: Bearer [REDACTED]
 
 Response (200 OK):
 {
@@ -876,21 +765,10 @@ Response (200 OK):
   "status": "running",
   "tournament_id": 12856,
   "begin_at": "2025-07-04T14:00:00Z",
-  "opponents": [
-    {
-      "type": "Player",
-      "opponent": {
-        "id": 1234,
-        "name": "Maru",
-        "nationality": "KR"
-      }
-    }
-  ],
-  ...
+  "opponents": [...]
 }
 
-Response Time: 187ms
-Rate Limit: 950/1000 remaining
+Time: 187ms │ Rate limit: 950/1000
 ```
 
 </details>
