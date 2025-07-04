@@ -262,11 +262,19 @@ starcraft-cli player-schedule Serral</code></pre>
                     <div class="cli-tabs">
                         <button class="cli-tab active" data-demo="live">Live</button>
                         <button class="cli-tab" data-demo="today">Today</button>
-                        <button class="cli-tab" data-demo="player">Players</button>
+                        <button class="cli-tab" data-demo="upcoming">Upcoming</button>
+                        <button class="cli-tab" data-demo="players">Players</button>
                         <button class="cli-tab" data-demo="schedule">Schedule</button>
-                        <button class="cli-tab" data-demo="tournament">Tournaments</button>
+                        <button class="cli-tab" data-demo="matches">Matches</button>
+                        <button class="cli-tab" data-demo="tournaments">Tournaments</button>
+                        <button class="cli-tab" data-demo="brackets">Brackets</button>
+                        <button class="cli-tab" data-demo="teams">Teams</button>
+                        <button class="cli-tab" data-demo="leagues">Leagues</button>
+                        <button class="cli-tab" data-demo="series">Series</button>
+                        <button class="cli-tab" data-demo="streams">Streams</button>
                         <button class="cli-tab" data-demo="search">Search</button>
                         <button class="cli-tab" data-demo="export">Export</button>
+                        <button class="cli-tab" data-demo="cache">Cache</button>
                     </div>
                     
                     <div class="cli-output active" id="demo-live">
@@ -302,7 +310,23 @@ starcraft-cli player-schedule Serral</code></pre>
 <span class="cli-stats">Total: 8 matches scheduled</span></pre>
                     </div>
                     
-                    <div class="cli-output" id="demo-player">
+                    <div class="cli-output" id="demo-upcoming">
+                        <div class="cli-command">$ starcraft-cli upcoming --days 3</div>
+                        <pre class="cli-result"><span class="cli-header">📅 UPCOMING MATCHES (Next 3 days)</span>
+
+<span class="cli-date">Tomorrow - Jan 6</span>
+<span class="cli-time">09:00</span> • <span class="cli-tournament">GSL Code S</span> • Ro8
+  <span class="cli-player-t">Maru</span> vs <span class="cli-player-p">herO</span>
+
+<span class="cli-time">14:00</span> • <span class="cli-tournament">IEM Katowice</span> • Group B
+  <span class="cli-player-z">Dark</span> vs <span class="cli-player-p">MaxPax</span>
+
+<span class="cli-date">Jan 7</span>
+<span class="cli-time">18:00</span> • <span class="cli-tournament">EPT Europe</span> • Qualifier
+  32 players • Open bracket</pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-players">
                         <div class="cli-command">$ starcraft-cli players --race zerg --limit 5</div>
                         <pre class="cli-result"><span class="cli-header">🎮 TOP ZERG PLAYERS</span>
 
@@ -326,21 +350,144 @@ starcraft-cli player-schedule Serral</code></pre>
 <span class="cli-stats">Recent: <span class="cli-win">W</span> <span class="cli-win">W</span> <span class="cli-win">W</span> <span class="cli-loss">L</span> <span class="cli-win">W</span></span></pre>
                     </div>
                     
-                    <div class="cli-output" id="demo-tournament">
-                        <div class="cli-command">$ starcraft-cli tournaments --status upcoming</div>
-                        <pre class="cli-result"><span class="cli-header">🏆 UPCOMING TOURNAMENTS</span>
+                    <div class="cli-output" id="demo-matches">
+                        <div class="cli-command">$ starcraft-cli matches --status past --limit 5</div>
+                        <pre class="cli-result"><span class="cli-header">🎯 RECENT MATCHES</span>
 
-<span class="cli-tournament-item">1. <span class="cli-tournament">IEM Katowice 2025</span>
-   <span class="cli-info">📅 Jan 5-12 • 💰 $500,000 • 📍 Poland</span>
-   <span class="cli-tier">Tier: S</span> • Players: 24/24
+<span class="cli-time">2 hours ago</span> • <span class="cli-tournament">IEM Katowice</span>
+<span class="cli-player-z">Dark</span> <span class="cli-win">2</span> - <span class="cli-loss">1</span> <span class="cli-player-t">Clem</span>
 
-2. <span class="cli-tournament">GSL Code S 2025 Season 1</span>
-   <span class="cli-info">📅 Jan 15 - Mar 20 • 💰 $140,000 • 📍 Korea</span>
-   <span class="cli-tier">Tier: S</span> • Players: 28/32
+<span class="cli-time">4 hours ago</span> • <span class="cli-tournament">GSL Code S</span>
+<span class="cli-player-p">herO</span> <span class="cli-win">2</span> - <span class="cli-loss">0</span> <span class="cli-player-t">ByuN</span>
 
-3. <span class="cli-tournament">EPT Winter Regional</span>
-   <span class="cli-info">📅 Jan 20-21 • 💰 $25,000 • 📍 Online</span>
-   <span class="cli-tier">Tier: A</span> • Open qualifier</span></pre>
+<span class="cli-time">Yesterday</span> • <span class="cli-tournament">TeamLiquid StarLeague</span>
+<span class="cli-player-z">Serral</span> <span class="cli-win">3</span> - <span class="cli-loss">0</span> <span class="cli-player-p">Astrea</span></pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-tournaments">
+                        <div class="cli-command">$ starcraft-cli tournaments --status ongoing</div>
+                        <pre class="cli-result"><span class="cli-header">🏆 ONGOING TOURNAMENTS</span>
+
+1. <span class="cli-tournament">IEM Katowice 2025</span>
+   <span class="cli-info">💰 $500,000 • 📍 Poland</span>
+   <span class="cli-status">● Groups Stage - Day 2</span>
+
+2. <span class="cli-tournament">GSL Code S 2025 S1</span>
+   <span class="cli-info">💰 $140,000 • 📍 Seoul</span>
+   <span class="cli-status">● Ro16 - Group B</span></pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-brackets">
+                        <div class="cli-command">$ starcraft-cli brackets "iem-katowice-2025" --stage playoffs</div>
+                        <pre class="cli-result"><span class="cli-header">🏆 IEM KATOWICE 2025 - Playoffs Bracket</span>
+
+<span class="cli-section">Upper Bracket</span>
+┌─ <span class="cli-player-z">Serral</span> ──┐
+               ├─ <span class="cli-player-z">Serral</span> <span class="cli-win">3-1</span> ──┐
+└─ <span class="cli-player-t">ByuN</span> ────┘                  │
+                                  ├─ TBD
+┌─ <span class="cli-player-t">Clem</span> ────┐                  │
+               ├─ TBD             │
+└─ <span class="cli-player-p">herO</span> ────┘
+
+<span class="cli-section">Lower Bracket</span>
+┌─ <span class="cli-player-z">Dark</span> ────┐
+               ├─ TBD
+└─ <span class="cli-player-p">MaxPax</span> ──┘</pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-teams">
+                        <div class="cli-command">$ starcraft-cli teams --league "teamliquid-starleague"</div>
+                        <pre class="cli-result"><span class="cli-header">👥 TEAM LIQUID STARLEAGUE - Teams</span>
+
+<span class="cli-team">Team Liquid</span>
+  • <span class="cli-player-t">Clem</span> • Captain
+  • <span class="cli-player-z">Serral</span>
+  • <span class="cli-player-p">MaxPax</span>
+  • <span class="cli-player-t">HeRoMaRinE</span>
+  <span class="cli-stats">Record: 7-2 • Points: 21</span>
+
+<span class="cli-team">ONSYDE Gaming</span>
+  • <span class="cli-player-t">Maru</span> • Captain  
+  • <span class="cli-player-z">Solar</span>
+  • <span class="cli-player-p">Zoun</span>
+  • <span class="cli-player-t">Spirit</span>
+  <span class="cli-stats">Record: 5-4 • Points: 15</span></pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-leagues">
+                        <div class="cli-command">$ starcraft-cli leagues --region eu</div>
+                        <pre class="cli-result"><span class="cli-header">🏅 EUROPEAN LEAGUES</span>
+
+<span class="cli-tournament">ESL Pro Tour EU</span>
+  <span class="cli-info">Status: Ongoing • Week 8 of 12</span>
+  <span class="cli-info">Next: Tomorrow 18:00 CET</span>
+
+<span class="cli-tournament">WardiTV Team League</span>
+  <span class="cli-info">Status: Playoffs</span>
+  <span class="cli-info">Finals: Jan 15</span>
+
+<span class="cli-tournament">SCL Europe</span>
+  <span class="cli-info">Status: Registration Open</span>
+  <span class="cli-info">Starts: Feb 1</span></pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-series">
+                        <div class="cli-command">$ starcraft-cli series --player Maru --limit 3</div>
+                        <pre class="cli-result"><span class="cli-header">📊 MARU'S RECENT SERIES</span>
+
+VS <span class="cli-player-z">Dark</span> • <span class="cli-tournament">GSL Code S</span>
+  <span class="cli-loss">L 1-3</span> • Yesterday
+  Maps: Alcyone, Site Delta, Goldenaura, Oceanborn
+
+VS <span class="cli-player-p">herO</span> • <span class="cli-tournament">IEM Katowice Qualifiers</span>
+  <span class="cli-win">W 2-0</span> • 3 days ago
+  Maps: NeoHumanity, Crimson Court
+
+VS <span class="cli-player-t">Clem</span> • <span class="cli-tournament">TeamLiquid StarLeague</span>
+  <span class="cli-win">W 3-2</span> • 5 days ago
+  Maps: Site Delta, Alcyone, Goldenaura, Dynasty, Amphion</pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-streams">
+                        <div class="cli-command">$ starcraft-cli streams --live</div>
+                        <pre class="cli-result"><span class="cli-header">📺 LIVE STREAMS</span>
+
+<span class="cli-stream">🔴 ESL_SC2</span>
+  <span class="cli-info">IEM Katowice 2025 - Day 2</span>
+  <span class="cli-stats">👁 12.4K viewers • English</span>
+
+<span class="cli-stream">🔴 GSL</span>
+  <span class="cli-info">Code S Ro16 - Group B</span>
+  <span class="cli-stats">👁 8.2K viewers • Korean</span>
+
+<span class="cli-stream">🔴 Clem</span>
+  <span class="cli-info">Ladder Practice - EU GM</span>
+  <span class="cli-stats">👁 3.1K viewers • French</span>
+
+<span class="cli-stream">🔴 uThermal</span>
+  <span class="cli-info">Terran Tutorial Tuesday</span>
+  <span class="cli-stats">👁 1.8K viewers • English</span></pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-cache">
+                        <div class="cli-command">$ starcraft-cli cache --stats</div>
+                        <pre class="cli-result"><span class="cli-header">💾 CACHE STATISTICS</span>
+
+<span class="cli-section">Storage</span>
+  Location: ~/.starcraft-cli/cache
+  Size: 42.3 MB
+  Entries: 1,247
+
+<span class="cli-section">Performance</span>
+  Hit Rate: 87.3%
+  Avg Response: 12ms (cached) vs 450ms (API)
+  
+<span class="cli-section">Recent Activity</span>
+  Last cleared: 7 days ago
+  Last hit: 2 minutes ago
+  
+<span class="cli-stats">Use 'starcraft-cli cache --clear' to clear cache</span></pre>
                     </div>
                     
                     <div class="cli-output" id="demo-search">
