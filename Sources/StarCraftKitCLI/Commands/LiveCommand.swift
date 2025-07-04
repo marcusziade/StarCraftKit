@@ -144,9 +144,20 @@ struct LiveCommand: AsyncParsableCommand {
         let (name1, flag1) = formatOpponent(opponent1)
         let (name2, flag2) = formatOpponent(opponent2)
         
-        // Get scores
-        let score1 = match.results.first { $0.teamID == opponent1?.opponent.id }?.score ?? 0
-        let score2 = match.results.first { $0.teamID == opponent2?.opponent.id }?.score ?? 0
+        // Get scores - check both teamID and playerID
+        let score1 = match.results.first { result in
+            if let opp1 = opponent1 {
+                return result.teamID == opp1.opponent.id || result.playerID == opp1.opponent.id
+            }
+            return false
+        }?.score ?? 0
+        
+        let score2 = match.results.first { result in
+            if let opp2 = opponent2 {
+                return result.teamID == opp2.opponent.id || result.playerID == opp2.opponent.id
+            }
+            return false
+        }?.score ?? 0
         
         // Format match type
         let matchType = match.numberOfGames > 1 ? "Bo\(match.numberOfGames)" : "Bo1"
