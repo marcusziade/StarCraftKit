@@ -159,10 +159,11 @@ code, pre {
 
 /* Hero Section */
 .hero {
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
     display: flex;
     align-items: center;
-    padding-top: 80px;
+    padding: 2rem 0 3rem;
+    margin-top: 80px;
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     position: relative;
     overflow: hidden;
@@ -324,18 +325,32 @@ code, pre {
 
 /* Terminal Demo */
 .terminal-window {
-    background: #0a0e1a;
+    background: #fdf6e3;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+@media (prefers-color-scheme: dark) {
+    .terminal-window {
+        background: #0a0e1a;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
 }
 
 .terminal-header {
-    background: #1a1f2e;
+    background: #eee8d5;
     padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .terminal-header {
+        background: #1a1f2e;
+    }
 }
 
 .terminal-buttons {
@@ -363,28 +378,56 @@ code, pre {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.875rem;
     line-height: 1.5;
+    color: #586e75;
+}
+
+@media (prefers-color-scheme: dark) {
+    .terminal-body {
+        color: #93a1a1;
+    }
 }
 
 .terminal-body pre {
     margin: 0;
 }
 
-.term-header { color: var(--sc2-cyan); }
-.term-logo { color: var(--sc2-orange); font-weight: 700; }
-.term-version { color: #6c757d; }
-.term-section { color: white; font-weight: 700; margin: 1rem 0; }
-.term-match { color: #adb5bd; }
-.term-tournament { color: var(--sc2-blue); font-weight: 600; }
-.term-stage { color: #6c757d; }
-.term-player-z { color: var(--zerg-purple); }
-.term-player-t { color: var(--terran-red); }
-.term-player-p { color: var(--protoss-gold); }
-.term-score { color: white; font-weight: 700; }
-.term-status { color: var(--sc2-orange); }
-.term-time { color: #6c757d; font-size: 0.8rem; }
-.term-stats { color: #6c757d; margin-top: 1rem; }
-.term-highlight { color: var(--sc2-blue); font-weight: 600; }
-.term-dim { color: #495057; }
+/* Solarized Light Terminal Colors */
+.term-header { color: #268bd2; }
+.term-logo { color: #cb4b16; font-weight: 700; }
+.term-version { color: #657b83; }
+.term-section { color: #073642; font-weight: 700; margin: 1rem 0; }
+.term-match { color: #586e75; }
+.term-tournament { color: #268bd2; font-weight: 600; }
+.term-stage { color: #657b83; }
+.term-player-z { color: #6c71c4; font-weight: 600; }
+.term-player-t { color: #dc322f; font-weight: 600; }
+.term-player-p { color: #b58900; font-weight: 600; }
+.term-score { color: #073642; font-weight: 700; }
+.term-status { color: #cb4b16; }
+.term-time { color: #93a1a1; font-size: 0.8rem; }
+.term-stats { color: #657b83; margin-top: 1rem; }
+.term-highlight { color: #268bd2; font-weight: 600; }
+.term-dim { color: #93a1a1; }
+
+/* Dark mode terminal colors */
+@media (prefers-color-scheme: dark) {
+    .term-header { color: var(--sc2-cyan); }
+    .term-logo { color: var(--sc2-orange); }
+    .term-version { color: #6c757d; }
+    .term-section { color: white; }
+    .term-match { color: #adb5bd; }
+    .term-tournament { color: var(--sc2-blue); }
+    .term-stage { color: #6c757d; }
+    .term-player-z { color: var(--zerg-purple); }
+    .term-player-t { color: var(--terran-red); }
+    .term-player-p { color: var(--protoss-gold); }
+    .term-score { color: white; }
+    .term-status { color: var(--sc2-orange); }
+    .term-time { color: #6c757d; }
+    .term-stats { color: #6c757d; }
+    .term-highlight { color: var(--sc2-blue); }
+    .term-dim { color: #495057; }
+}
 
 /* Hero Stats */
 .hero-stats {
@@ -541,31 +584,151 @@ code, pre {
     background: var(--bg-secondary);
 }
 
-.cli-features {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+.cli-showcase {
     margin-top: 3rem;
 }
 
-.cli-card {
+.cli-demo {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.cli-tabs {
+    display: flex;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.cli-tab {
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.cli-tab:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+}
+
+.cli-tab.active {
+    color: var(--sc2-blue);
+    background: var(--card-bg);
+    border-bottom: 2px solid var(--sc2-blue);
+}
+
+.cli-output {
+    display: none;
     padding: 1.5rem;
 }
 
-.cli-card h3 {
-    font-size: 1.25rem;
+.cli-output.active {
+    display: block;
+}
+
+.cli-command {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--code-bg);
+    border-radius: 6px;
+    border-left: 3px solid var(--sc2-blue);
+}
+
+.cli-result {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--code-bg);
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+/* CLI Output Colors */
+.cli-header { 
+    color: var(--sc2-blue); 
+    font-weight: 700;
+    display: block;
     margin-bottom: 1rem;
 }
 
-.code-block.mini {
-    font-size: 0.8rem;
+.cli-tournament { color: var(--sc2-blue); }
+.cli-stage { color: var(--text-secondary); }
+.cli-player-t { color: var(--terran-red); font-weight: 600; }
+.cli-player-z { color: var(--zerg-purple); font-weight: 600; }
+.cli-player-p { color: var(--protoss-gold); font-weight: 600; }
+.cli-team { color: var(--sc2-cyan); font-weight: 600; }
+.cli-score { color: var(--text-primary); font-weight: 700; }
+.cli-status { color: var(--sc2-orange); }
+.cli-match { color: var(--text-primary); }
+.cli-date { 
+    color: var(--text-primary); 
+    font-weight: 600;
+    display: block;
+    margin: 1rem 0 0.5rem;
+}
+.cli-info { color: var(--text-secondary); }
+.cli-tier { color: var(--sc2-purple); font-weight: 600; }
+.cli-win { color: #27c93f; font-weight: 700; }
+.cli-loss { color: #ff5f56; font-weight: 700; }
+.cli-stats { 
+    color: var(--text-secondary); 
+    display: block;
+    margin-top: 1rem;
+}
+.cli-section {
+    color: var(--text-primary);
+    font-weight: 600;
+    display: block;
+    margin: 1rem 0 0.5rem;
+}
+.cli-search-item {
+    display: block;
+    margin: 0.5rem 0;
+    color: var(--text-secondary);
+}
+.cli-tournament-item {
+    display: block;
+    margin: 1rem 0;
 }
 
-.code-block.mini pre {
-    padding: 0.75rem;
+.cli-features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.cli-feature {
+    text-align: center;
+}
+
+.cli-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.cli-feature h4 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.cli-feature p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
 }
 
 /* Installation Section */
@@ -687,13 +850,22 @@ code, pre {
         display: none;
     }
     
+    .hero {
+        min-height: auto;
+        padding: 2rem 0;
+    }
+    
     .hero-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
     
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1.25rem;
     }
     
     .features-grid {
@@ -704,8 +876,13 @@ code, pre {
         grid-template-columns: 1fr;
     }
     
-    .cli-features {
-        grid-template-columns: 1fr;
+    .cli-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .cli-icon {
+        font-size: 2rem;
     }
     
     .install-grid {
@@ -715,5 +892,17 @@ code, pre {
     .footer-content {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+    
+    .terminal-window {
+        font-size: 0.75rem;
+    }
+    
+    .hero-stats {
+        gap: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.25rem;
     }
 }

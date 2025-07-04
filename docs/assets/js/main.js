@@ -25,6 +25,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Handle CLI demo tabs
+    const cliTabs = document.querySelectorAll('.cli-tab');
+    const cliOutputs = document.querySelectorAll('.cli-output');
+    
+    cliTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs and outputs
+            cliTabs.forEach(t => t.classList.remove('active'));
+            cliOutputs.forEach(o => o.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Show corresponding output
+            const demoId = `demo-${this.dataset.demo}`;
+            const output = document.getElementById(demoId);
+            if (output) {
+                output.classList.add('active');
+            }
+        });
+    });
+    
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('a[href^="#"]');
     navLinks.forEach(link => {

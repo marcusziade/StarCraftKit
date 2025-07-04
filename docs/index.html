@@ -23,7 +23,7 @@
                 <li><a href="#sdk">SDK</a></li>
                 <li><a href="#cli">CLI</a></li>
                 <li><a href="#installation">Install</a></li>
-                <li><a href="/StarCraftKit/documentation/starcraftkit" class="docs-link">
+                <li><a href="https://marcusziade.github.io/StarCraftKit/documentation/starcraftkit" class="docs-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
@@ -83,7 +83,7 @@ starcraft-cli player-schedule Serral</code></pre>
                     
                     <div class="hero-actions">
                         <a href="#installation" class="btn btn-primary">Get Started</a>
-                        <a href="/StarCraftKit/documentation/starcraftkit" class="btn btn-secondary">Documentation</a>
+                        <a href="https://marcusziade.github.io/StarCraftKit/documentation/starcraftkit" class="btn btn-secondary">Documentation</a>
                     </div>
                 </div>
                 
@@ -264,37 +264,106 @@ starcraft-cli player-schedule Serral</code></pre>
             <h2 class="section-title">Command Line Interface</h2>
             <p class="section-subtitle">The definitive tool for StarCraft 2 esports fans</p>
             
-            <div class="cli-features">
-                <div class="cli-card">
-                    <h3>📺 Live Tracking</h3>
-                    <div class="code-block mini">
-                        <pre><code>starcraft-cli live --watch
-starcraft-cli today
-starcraft-cli upcoming --days 7</code></pre>
+            <div class="cli-showcase">
+                <div class="cli-demo">
+                    <div class="cli-tabs">
+                        <button class="cli-tab active" data-demo="live">Live Matches</button>
+                        <button class="cli-tab" data-demo="player">Player Stats</button>
+                        <button class="cli-tab" data-demo="tournament">Tournaments</button>
+                        <button class="cli-tab" data-demo="search">Search</button>
+                    </div>
+                    
+                    <div class="cli-output active" id="demo-live">
+                        <div class="cli-command">$ starcraft-cli live</div>
+                        <pre class="cli-result"><span class="cli-header">🔴 LIVE MATCHES (2 found)</span>
+
+<span class="cli-match">┌─ <span class="cli-tournament">ESL Pro Tour 2025</span> • <span class="cli-stage">Quarterfinals</span>
+│  <span class="cli-player-t">Clem</span> vs <span class="cli-player-z">Dark</span>
+│  <span class="cli-score">2-1</span> • Best of 5
+│  <span class="cli-status">● Map 4: Dragon Scales LE</span>
+└─ Started 47 minutes ago
+
+┌─ <span class="cli-tournament">WardiTV Team League</span> • <span class="cli-stage">Week 3</span>
+│  <span class="cli-team">Team Liquid</span> vs <span class="cli-team">ONSYDE Gaming</span>
+│  <span class="cli-score">3-2</span> • Best of 7
+│  <span class="cli-status">● Ace Match: Solar vs Spirit</span>
+└─ Started 2 hours ago</span></pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-player">
+                        <div class="cli-command">$ starcraft-cli player-schedule Serral</div>
+                        <pre class="cli-result"><span class="cli-header">📅 SERRAL'S UPCOMING MATCHES</span>
+
+<span class="cli-date">Tomorrow (Jan 6)</span>
+<span class="cli-match">┌─ <span class="cli-tournament">IEM Katowice 2025</span> • <span class="cli-stage">Group A</span>
+│  vs <span class="cli-player-t">ByuN</span> • Best of 3
+│  🕐 14:00 CET
+└─ Opening match
+
+┌─ <span class="cli-tournament">IEM Katowice 2025</span> • <span class="cli-stage">Group A</span>
+│  vs <span class="cli-player-p">MaxPax</span> • Best of 3
+│  🕐 16:30 CET (estimated)
+└─ Winners match</span>
+
+<span class="cli-stats">Recent form: <span class="cli-win">W</span> <span class="cli-win">W</span> <span class="cli-win">W</span> <span class="cli-loss">L</span> <span class="cli-win">W</span> (4-1)</span></pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-tournament">
+                        <div class="cli-command">$ starcraft-cli tournaments --status upcoming</div>
+                        <pre class="cli-result"><span class="cli-header">🏆 UPCOMING TOURNAMENTS</span>
+
+<span class="cli-tournament-item">1. <span class="cli-tournament">IEM Katowice 2025</span>
+   <span class="cli-info">📅 Jan 5-12 • 💰 $500,000 • 📍 Poland</span>
+   <span class="cli-tier">Tier: S</span> • Players: 24/24
+
+2. <span class="cli-tournament">GSL Code S 2025 Season 1</span>
+   <span class="cli-info">📅 Jan 15 - Mar 20 • 💰 $140,000 • 📍 Korea</span>
+   <span class="cli-tier">Tier: S</span> • Players: 28/32
+
+3. <span class="cli-tournament">EPT Winter Regional</span>
+   <span class="cli-info">📅 Jan 20-21 • 💰 $25,000 • 📍 Online</span>
+   <span class="cli-tier">Tier: A</span> • Open qualifier</span></pre>
+                    </div>
+                    
+                    <div class="cli-output" id="demo-search">
+                        <div class="cli-command">$ starcraft-cli search "maru"</div>
+                        <pre class="cli-result"><span class="cli-header">🔍 SEARCH RESULTS FOR "maru"</span>
+
+<span class="cli-section">Players (1)</span>
+<span class="cli-search-item">• <span class="cli-player-t">Maru</span> (Cho Seong-ju)
+  Team: <span class="cli-team">ONSYDE Gaming</span> • Race: Terran
+  World Rank: #3 • Country: 🇰🇷 Korea</span>
+
+<span class="cli-section">Recent Matches (3)</span>
+<span class="cli-search-item">• <span class="cli-win">WIN</span> vs Solar (2-0) - GSL Code S Ro16
+• <span class="cli-loss">LOSS</span> vs Serral (1-3) - EPT Finals
+• <span class="cli-win">WIN</span> vs Clem (3-2) - King of Battles</span>
+
+<span class="cli-section">Upcoming (1)</span>
+<span class="cli-search-item">• vs herO - GSL Code S Ro8 (Jan 8, 18:00 KST)</span></pre>
                     </div>
                 </div>
-                <div class="cli-card">
-                    <h3>🎮 Player Intel</h3>
-                    <div class="code-block mini">
-                        <pre><code>starcraft-cli players --race zerg
-starcraft-cli player-schedule Dark
-starcraft-cli player-matches Maru</code></pre>
+                
+                <div class="cli-features-grid">
+                    <div class="cli-feature">
+                        <span class="cli-icon">⚡</span>
+                        <h4>Real-time Updates</h4>
+                        <p>Live match tracking with auto-refresh</p>
                     </div>
-                </div>
-                <div class="cli-card">
-                    <h3>🏆 Tournament Data</h3>
-                    <div class="code-block mini">
-                        <pre><code>starcraft-cli tournaments --tier s
-starcraft-cli tournament-matches GSL
-starcraft-cli series "Code S"</code></pre>
+                    <div class="cli-feature">
+                        <span class="cli-icon">📊</span>
+                        <h4>Rich Output</h4>
+                        <p>Beautiful tables and formatted data</p>
                     </div>
-                </div>
-                <div class="cli-card">
-                    <h3>🔍 Search & Export</h3>
-                    <div class="code-block mini">
-                        <pre><code>starcraft-cli search "Team Liquid"
-starcraft-cli export players --csv
-starcraft-cli cache stats</code></pre>
+                    <div class="cli-feature">
+                        <span class="cli-icon">🎨</span>
+                        <h4>Colorful Display</h4>
+                        <p>Race colors and status indicators</p>
+                    </div>
+                    <div class="cli-feature">
+                        <span class="cli-icon">💾</span>
+                        <h4>Export Options</h4>
+                        <p>Save data as JSON or CSV</p>
                     </div>
                 </div>
             </div>
@@ -379,7 +448,7 @@ let client = StarCraftClient(apiKey: "your-api-key")</code></pre>
                 <div class="footer-section">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="/StarCraftKit/documentation/starcraftkit">API Documentation</a></li>
+                        <li><a href="https://marcusziade.github.io/StarCraftKit/documentation/starcraftkit">API Documentation</a></li>
                         <li><a href="https://github.com/marcusziade/StarCraftKit">GitHub Repository</a></li>
                         <li><a href="https://github.com/marcusziade/StarCraftKit/issues">Report Issues</a></li>
                         <li><a href="https://github.com/marcusziade/StarCraftKit/releases">Releases</a></li>
@@ -388,7 +457,6 @@ let client = StarCraftClient(apiKey: "your-api-key")</code></pre>
                 <div class="footer-section">
                     <h4>Community</h4>
                     <ul>
-                        <li><a href="https://discord.gg/starcraft2">StarCraft Discord</a></li>
                         <li><a href="https://reddit.com/r/starcraft">r/starcraft</a></li>
                         <li><a href="https://liquipedia.net/starcraft2">Liquipedia</a></li>
                         <li><a href="https://tl.net">TeamLiquid</a></li>
@@ -396,7 +464,7 @@ let client = StarCraftClient(apiKey: "your-api-key")</code></pre>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 StarCraftKit. Built with 💙 for the StarCraft community.</p>
+                <p>&copy; 2025 StarCraftKit. Built for the StarCraft community.</p>
             </div>
         </div>
     </footer>
