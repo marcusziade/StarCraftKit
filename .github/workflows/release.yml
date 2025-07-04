@@ -107,16 +107,20 @@ jobs:
       
       # Update AUR package
       - name: Checkout main repository for AUR templates
-        if: ${{ secrets.AUR_SSH_PRIVATE_KEY != '' }}
         uses: actions/checkout@v4
         with:
           path: main-repo
       
       - name: Setup SSH for AUR
-        if: ${{ secrets.AUR_SSH_PRIVATE_KEY != '' }}
         env:
           AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
         run: |
+          # Skip if no SSH key provided
+          if [ -z "$AUR_SSH_PRIVATE_KEY" ]; then
+            echo "No AUR SSH key provided, skipping AUR setup"
+            exit 0
+          fi
+          
           mkdir -p ~/.ssh
           echo "$AUR_SSH_PRIVATE_KEY" > ~/.ssh/aur
           chmod 600 ~/.ssh/aur
@@ -132,8 +136,15 @@ jobs:
           ssh-keyscan -H aur.archlinux.org >> ~/.ssh/known_hosts
       
       - name: Update AUR package
-        if: ${{ secrets.AUR_SSH_PRIVATE_KEY != '' }}
+        env:
+          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
         run: |
+          # Skip if no SSH key provided
+          if [ -z "$AUR_SSH_PRIVATE_KEY" ]; then
+            echo "No AUR SSH key provided, skipping AUR update"
+            exit 0
+          fi
+          
           # Get version from tag or workflow input
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             VERSION="${{ github.event.inputs.version }}"
