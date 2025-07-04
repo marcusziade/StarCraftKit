@@ -1,11 +1,61 @@
 import Foundation
 
-/// StarCraft 2 player representation
+/// A professional StarCraft II player.
+///
+/// The `Player` type represents a professional StarCraft II esports player,
+/// including their personal information, team affiliation, and gaming history.
+///
+/// ## Accessing Player Information
+///
+/// ```swift
+/// // Fetch a specific player
+/// let player = try await client.getPlayer(id: 12345)
+/// 
+/// // Display player info
+/// print("Player: \(player.name)")
+/// print("Real name: \(player.fullName)")
+/// print("Country: \(player.nationality ?? "Unknown")")
+/// print("Team: \(player.currentTeam?.name ?? "No team")")
+/// 
+/// // Search for players
+/// let parameters = QueryParameters().search("Serral")
+/// let players = try await client.getPlayers(parameters: parameters)
+/// ```
+///
+/// ## Player Properties
+///
+/// Players have both gaming and personal information:
+/// - Gaming info: ``name``, ``currentTeam``, ``role``
+/// - Personal info: ``firstName``, ``lastName``, ``age``, ``nationality``
+/// - Media: ``imageURL`` for player photos
+///
+/// ## Topics
+///
+/// ### Identity
+/// - ``id``
+/// - ``name``
+/// - ``slug``
+///
+/// ### Personal Information
+/// - ``firstName``
+/// - ``lastName``
+/// - ``fullName``
+/// - ``age``
+/// - ``birthday``
+/// - ``nationality``
+///
+/// ### Gaming Profile
+/// - ``currentTeam``
+/// - ``role``
+/// - ``currentVideogame``
+///
+/// ### Media
+/// - ``imageURL``
 public struct Player: Codable, Sendable, Identifiable {
     /// Unique identifier for the player
     public let id: Int
     
-    /// Player's gaming name
+    /// Player's gaming name (e.g., "Serral", "Maru", "Dark")
     public let name: String
     
     /// URL-friendly version of the player name
@@ -20,13 +70,13 @@ public struct Player: Codable, Sendable, Identifiable {
     /// Player's role/position
     public let role: String?
     
-    /// Player's nationality (ISO code)
+    /// Player's nationality as ISO country code (e.g., "KR" for South Korea, "FI" for Finland)
     public let nationality: String?
     
-    /// URL to player's photo
+    /// URL to the player's profile photo
     public let imageURL: URL?
     
-    /// Player's current team
+    /// The team the player currently represents
     public let currentTeam: Team?
     
     /// Current game specialization

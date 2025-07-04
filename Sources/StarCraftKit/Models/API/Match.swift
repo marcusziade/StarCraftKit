@@ -1,13 +1,71 @@
 import Foundation
 
-/// Status of a match
+/// The current status of a StarCraft II match.
+///
+/// Matches progress through three states:
+/// - `notStarted`: Match is scheduled but hasn't begun
+/// - `running`: Match is currently in progress
+/// - `finished`: Match has completed
 public enum MatchStatus: String, Codable, Sendable {
+    /// Match has not started yet
     case notStarted = "not_started"
+    
+    /// Match is currently being played
     case running
+    
+    /// Match has finished
     case finished
 }
 
-/// StarCraft 2 match representation
+/// A StarCraft II esports match between two opponents.
+///
+/// A match represents a competition between two players or teams in a tournament.
+/// Each match consists of multiple games (e.g., best of 3, best of 5).
+///
+/// ## Match Structure
+///
+/// ```swift
+/// let match = try await client.getMatch(id: 12345)
+/// 
+/// // Basic information
+/// print("Match: \(match.name)")
+/// print("Status: \(match.status)")
+/// print("Best of \(match.numberOfGames)")
+/// 
+/// // Check results
+/// if let winner = match.winner {
+///     print("Winner: \(winner.name)")
+/// }
+/// 
+/// // Game scores
+/// for (index, game) in match.games.enumerated() {
+///     print("Game \(index + 1): \(game.winner?.name ?? "Not played")")
+/// }
+/// ```
+///
+/// ## Topics
+///
+/// ### Match Information
+/// - ``id``
+/// - ``name``
+/// - ``slug``
+/// - ``status``
+///
+/// ### Tournament Context
+/// - ``tournament``
+/// - ``serie``
+/// - ``league``
+///
+/// ### Timing
+/// - ``scheduledAt``
+/// - ``beginAt``
+/// - ``endAt``
+///
+/// ### Competition Details
+/// - ``opponents``
+/// - ``games``
+/// - ``results``
+/// - ``winner``
 public struct Match: Codable, Sendable, Identifiable {
     /// Unique identifier for the match
     public let id: Int

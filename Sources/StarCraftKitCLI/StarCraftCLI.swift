@@ -12,6 +12,67 @@ extension Int {
     }
 }
 
+/// The main command-line interface for StarCraftKit.
+///
+/// `StarCraftCLI` provides comprehensive access to StarCraft II esports data through
+/// an intuitive command-line interface. It supports tracking live matches, exploring
+/// player statistics, browsing tournaments, and much more.
+///
+/// ## Setup
+///
+/// Set your PandaScore API token before using:
+/// ```bash
+/// export PANDA_TOKEN="your-api-token"
+/// ```
+///
+/// ## Basic Usage
+///
+/// ```bash
+/// # View live matches
+/// starcraft live
+///
+/// # Search for a player
+/// starcraft search player Serral
+///
+/// # Check today's matches
+/// starcraft today
+///
+/// # Get help
+/// starcraft --help
+/// ```
+///
+/// ## Available Commands
+///
+/// The CLI is organized into logical command groups:
+///
+/// ### Live Tracking
+/// - `live`: Currently running matches
+/// - `today`: Today's match schedule
+/// - `upcoming`: Future matches
+///
+/// ### Player Information
+/// - `players`: List all players
+/// - `player-schedule`: Specific player's matches
+/// - `player-matches`: Player's match history
+///
+/// ### Tournament Data
+/// - `tournaments`: Browse tournaments
+/// - `tournament-matches`: Tournament brackets
+/// - `series`: Tournament series
+///
+/// ### Search & Export
+/// - `search`: Universal search
+/// - `export`: Export data to JSON/CSV
+///
+/// ## Topics
+///
+/// ### Subcommands
+/// - ``LiveCommand``
+/// - ``TodayCommand``
+/// - ``UpcomingCommand``
+/// - ``PlayersCommand``
+/// - ``PlayerScheduleCommand``
+/// - ``SearchCommand``
 @main
 struct StarCraftCLI: AsyncParsableCommand {
     static let configuration = CommandConfiguration(

@@ -1,6 +1,57 @@
 import Foundation
 
-/// Comprehensive error types for the StarCraft API
+/// Comprehensive error types for StarCraftKit API operations.
+///
+/// `APIError` provides detailed error information for all types of failures
+/// that can occur when interacting with the PandaScore API.
+///
+/// ## Error Handling
+///
+/// ```swift
+/// do {
+///     let matches = try await client.getLiveMatches()
+/// } catch APIError.unauthorized {
+///     print("Invalid API token - check your credentials")
+/// } catch APIError.rateLimitExceeded(let retryAfter, _) {
+///     print("Rate limit hit - retry after \(retryAfter ?? 60) seconds")
+/// } catch APIError.networkError(let underlying) {
+///     print("Network issue: \(underlying.localizedDescription)")
+/// } catch {
+///     print("Unexpected error: \(error)")
+/// }
+/// ```
+///
+/// ## Common Errors
+///
+/// - ``unauthorized(message:)``: Invalid or missing API token
+/// - ``rateLimitExceeded(retryAfter:remaining:)``: Too many requests
+/// - ``notFound(resource:)``: Requested resource doesn't exist
+/// - ``networkError(underlying:)``: Network connectivity issues
+///
+/// ## Topics
+///
+/// ### Authentication Errors
+/// - ``unauthorized(message:)``
+/// - ``forbidden(message:)``
+///
+/// ### Network Errors
+/// - ``networkError(underlying:)``
+/// - ``httpError(statusCode:response:)``
+/// - ``timeout``
+///
+/// ### API Limits
+/// - ``rateLimitExceeded(retryAfter:remaining:)``
+///
+/// ### Data Errors
+/// - ``notFound(resource:)``
+/// - ``decodingError(underlying:data:)``
+/// - ``invalidRequest(reason:)``
+///
+/// ### Server Errors
+/// - ``serverError(statusCode:message:)``
+///
+/// ### Real-time Errors
+/// - ``webSocketError(reason:)``
 public enum APIError: LocalizedError, Sendable {
     /// Network connectivity issues
     case networkError(underlying: Error)

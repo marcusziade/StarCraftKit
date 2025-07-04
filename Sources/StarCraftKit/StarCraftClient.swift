@@ -4,7 +4,59 @@ import FoundationNetworking
 #endif
 import Logging
 
-/// Main client for interacting with the StarCraft 2 API
+/// The main client for interacting with the PandaScore StarCraft II API.
+///
+/// `StarCraftClient` is an actor that provides thread-safe access to all StarCraft II esports data.
+/// It handles authentication, caching, retry logic, and all API communications.
+///
+/// ## Creating a Client
+///
+/// ```swift
+/// // Basic initialization
+/// let client = StarCraftClient(apiToken: "your-api-token")
+///
+/// // Custom configuration
+/// let config = StarCraftClient.Configuration(
+///     apiKey: "your-api-token",
+///     retryConfiguration: .aggressive,
+///     cacheConfiguration: .init(maxSize: 200, defaultTTL: 600)
+/// )
+/// let client = StarCraftClient(configuration: config)
+/// ```
+///
+/// ## Making Requests
+///
+/// All methods are async and throw errors:
+///
+/// ```swift
+/// do {
+///     let matches = try await client.getLiveMatches()
+///     let players = try await client.getPlayers()
+/// } catch {
+///     print("Error: \(error)")
+/// }
+/// ```
+///
+/// ## Topics
+///
+/// ### Matches
+/// - ``getLiveMatches()``
+/// - ``getUpcomingMatches()``
+/// - ``getPastMatches()``
+/// - ``getMatches(parameters:)``
+///
+/// ### Players
+/// - ``getPlayers(parameters:)``
+/// - ``getPlayer(id:)``
+///
+/// ### Teams
+/// - ``getTeams(parameters:)``
+/// - ``getTeam(id:)``
+///
+/// ### Tournaments
+/// - ``getTournaments(parameters:)``
+/// - ``getTournament(id:)``
+/// - ``getTournamentMatches(tournamentId:parameters:)``
 public actor StarCraftClient: APIClientProtocol {
     private let networkingClient: NetworkingClient
     private let cache: ResponseCache
@@ -12,7 +64,18 @@ public actor StarCraftClient: APIClientProtocol {
     private let logger: Logger
     private let decoder: JSONDecoder
     
-    /// Authentication configuration
+    /// Configuration options for the StarCraft client.
+    ///
+    /// Use this to customize authentication, caching, retry behavior, and more.
+    ///
+    /// ```swift
+    /// let config = Configuration(
+    ///     apiKey: "your-token",
+    ///     authMethod: .bearerToken,
+    ///     retryConfiguration: .aggressive,
+    ///     cacheConfiguration: .init(maxSize: 200, defaultTTL: 600)
+    /// )
+    /// ```
     public struct Configuration: Sendable {
         public let apiKey: String
         public let authMethod: AuthMethod

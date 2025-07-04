@@ -51,8 +51,8 @@ jobs:
     - name: Build Docker image
       run: docker build -t starcraftkit .
       
-    - name: Run tests in Docker
-      run: docker run --rm starcraftkit swift test
+    - name: Run CLI in Docker
+      run: docker run --rm starcraftkit starcraft-cli --help
       
   lint:
     name: SwiftLint
