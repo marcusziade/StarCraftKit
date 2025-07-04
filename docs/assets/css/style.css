@@ -756,59 +756,219 @@ code, pre {
 
 .installation-section .section-title {
     text-align: center;
+    margin-bottom: 0.5rem;
 }
 
-.install-grid {
+.installation-section .section-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    margin-bottom: 3rem;
+}
+
+/* OS Recommendations */
+.os-recommendations {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
 }
 
-.install-option {
+.os-card {
     background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.os-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--sc2-blue) 0%, var(--sc2-purple) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.os-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.os-card:hover::before {
+    opacity: 1;
+}
+
+.macos-card .os-icon {
+    color: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+    .macos-card .os-icon {
+        color: #fff;
+    }
+}
+
+.arch-card .os-icon {
+    color: #1793d1;
+}
+
+.linux-card .os-icon {
+    color: var(--sc2-orange);
+}
+
+.os-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.os-icon {
+    flex-shrink: 0;
+}
+
+.os-header h3 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.os-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--sc2-blue);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.install-command {
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.install-command code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    user-select: all;
+}
+
+.copy-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-secondary);
+}
+
+.copy-btn:hover {
+    background: var(--sc2-blue);
+    color: white;
+    border-color: var(--sc2-blue);
+}
+
+.os-description {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* Other Methods */
+.other-methods {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.other-methods h3 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-secondary);
+}
+
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.method-card {
+    background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
+    text-align: center;
 }
 
-.install-option h3 {
+.method-icon {
+    display: inline-flex;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    color: var(--sc2-blue);
+}
+
+.method-card h4 {
     font-size: 1.125rem;
     margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
-.install-option p {
+.method-card p {
     color: var(--text-secondary);
-    margin-bottom: 1rem;
     font-size: 0.875rem;
+    margin-bottom: 1rem;
 }
 
-.download-links {
+.download-buttons {
     display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 0.75rem;
+    justify-content: center;
 }
 
-.download-link {
-    display: flex;
+.mini-download-btn {
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     text-decoration: none;
     color: var(--text-primary);
+    font-size: 0.875rem;
     transition: all 0.3s ease;
 }
 
-.download-link:hover {
+.mini-download-btn:hover {
     background: var(--sc2-blue);
     color: white;
+    border-color: var(--sc2-blue);
+}
+
+/* Legacy styles cleanup */
+.install-grid {
+    display: none;
 }
 
 .setup-section {
@@ -988,8 +1148,49 @@ code, pre {
         font-size: 0.75rem;
     }
     
-    .install-grid {
+    .os-recommendations {
         grid-template-columns: 1fr;
+    }
+    
+    .os-card {
+        padding: 1.25rem;
+    }
+    
+    .os-header {
+        flex-wrap: wrap;
+    }
+    
+    .os-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .install-command {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+    
+    .install-command code {
+        font-size: 0.75rem;
+        word-break: break-all;
+    }
+    
+    .copy-btn {
+        align-self: flex-end;
+    }
+    
+    .method-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .download-buttons {
+        flex-direction: column;
+    }
+    
+    .mini-download-btn {
+        width: 100%;
+        justify-content: center;
     }
     
     .code-block pre {

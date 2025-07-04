@@ -129,6 +129,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Copy functionality for install commands
+    const copyButtons = document.querySelectorAll('.copy-btn');
+    copyButtons.forEach(btn => {
+        btn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const command = this.parentElement.querySelector('code').textContent;
+            try {
+                await navigator.clipboard.writeText(command);
+                const originalHTML = this.innerHTML;
+                this.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>`;
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+        });
+    });
+    
     // Copy code functionality (for future enhancement)
     const codeBlocks = document.querySelectorAll('.code-block');
     codeBlocks.forEach(block => {
