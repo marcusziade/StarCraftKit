@@ -107,24 +107,32 @@ jobs:
       
       # Update AUR package
       - name: Checkout main repository for AUR templates
+        if: ${{ secrets.AUR_SSH_PRIVATE_KEY != '' }}
         uses: actions/checkout@v4
         with:
           path: main-repo
       
       - name: Setup SSH for AUR
+        if: ${{ secrets.AUR_SSH_PRIVATE_KEY != '' }}
         env:
           AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "$AUR_SSH_PRIVATE_KEY" > ~/.ssh/aur_key
-          chmod 600 ~/.ssh/aur_key
-          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
-          ssh-keyscan -t rsa aur.archlinux.org >> ~/.ssh/known_hosts
+          echo "$AUR_SSH_PRIVATE_KEY" > ~/.ssh/aur
+          chmod 600 ~/.ssh/aur
           
-          # Test SSH connection
-          ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=no aur@aur.archlinux.org help || echo "SSH test completed"
+          # Configure SSH
+          cat >> ~/.ssh/config << 'EOF'
+          Host aur.archlinux.org
+            IdentityFile ~/.ssh/aur
+            User aur
+          EOF
+          
+          chmod 600 ~/.ssh/config
+          ssh-keyscan -H aur.archlinux.org >> ~/.ssh/known_hosts
       
       - name: Update AUR package
+        if: ${{ secrets.AUR_SSH_PRIVATE_KEY != '' }}
         run: |
           # Get version from tag or workflow input
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -134,47 +142,39 @@ jobs:
           fi
           LINUX_SHA256=$(sha256sum artifacts/starcraft-cli-linux/starcraft-cli-linux.tar.gz | cut -d' ' -f1)
           
-          # Clone AUR package or create directory
-          export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=no"
-          if ! git clone ssh://aur@aur.archlinux.org/starcraft-cli.git aur-starcraft-cli; then
-            echo "AUR package doesn't exist yet, creating local directory"
-            mkdir -p aur-starcraft-cli
-            cd aur-starcraft-cli
-            git init
-            cd ..
+          # Clone existing AUR package
+          if ! git clone ssh://aur@aur.archlinux.org/starcraft-cli.git; then
+            echo "❌ Failed to clone AUR package. Please create it first with:"
+            echo "   ssh aur@aur.archlinux.org setup-repo starcraft-cli"
+            echo "Skipping AUR update for this release."
+            exit 0
           fi
           
-          cd aur-starcraft-cli
+          cd starcraft-cli
           
-          # Copy our PKGBUILD template from main repo
+          # Copy updated PKGBUILD from main repo
           cp ../main-repo/aur/starcraft-cli/PKGBUILD .
           
-          # Update PKGBUILD with new version and checksum
+          # Update version and checksum
           sed -i "s/pkgver=.*/pkgver=${VERSION}/" PKGBUILD
           sed -i "s/sha256sums=.*/sha256sums=('${LINUX_SHA256}')/" PKGBUILD
           
           # Generate .SRCINFO
-          if ! command -v makepkg &> /dev/null; then
-            echo "makepkg not found, creating .SRCINFO manually"
-            cat > .SRCINFO << 'SRCINFO'
+          # Since makepkg is not available in Ubuntu runner, create it manually
+          cat > .SRCINFO << EOF
           pkgbase = starcraft-cli
           	pkgdesc = Command-line tool for tracking StarCraft 2 esports
-          	pkgver = VERSION_PLACEHOLDER
+          	pkgver = ${VERSION}
           	pkgrel = 1
           	url = https://github.com/marcusziade/StarCraftKit
           	arch = x86_64
           	license = MIT
           	depends = glibc
-          	source = starcraft-cli-VERSION_PLACEHOLDER.tar.gz::https://github.com/marcusziade/StarCraftKit/releases/download/VERSION_PLACEHOLDER/starcraft-cli-linux.tar.gz
-          	sha256sums = SHA256_PLACEHOLDER
+          	source = starcraft-cli-${VERSION}.tar.gz::https://github.com/marcusziade/StarCraftKit/releases/download/${VERSION}/starcraft-cli-linux.tar.gz
+          	sha256sums = ${LINUX_SHA256}
           
           pkgname = starcraft-cli
-          SRCINFO
-            sed -i "s/VERSION_PLACEHOLDER/${VERSION}/g" .SRCINFO
-            sed -i "s/SHA256_PLACEHOLDER/${LINUX_SHA256}/g" .SRCINFO
-          else
-            makepkg --printsrcinfo > .SRCINFO
-          fi
+          EOF
           
           # Configure git
           git config user.name "Marcus Ziade"
@@ -182,34 +182,11 @@ jobs:
           
           # Commit and push
           git add PKGBUILD .SRCINFO
-          git commit -m "Update to ${VERSION}" || echo "No changes to commit"
-          
-          # Push to AUR if we have the SSH key
-          if [ -f ~/.ssh/aur_key ]; then
-            export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=no"
-            
-            # For initial creation, we need to push to a new repository
-            if [ ! -d .git ]; then
-              echo "Error: Not in a git repository"
-              exit 1
-            fi
-            
-            # Check if this is a fresh repo (no remotes)
-            if ! git remote | grep -q .; then
-              echo "Fresh repository detected, setting up AUR remote"
-              git remote add origin ssh://aur@aur.archlinux.org/starcraft-cli.git
-              git push -u origin master || {
-                echo "❌ Failed to push to AUR. The package may not exist yet."
-                echo "To create it, run: ssh aur@aur.archlinux.org setup-repo starcraft-cli"
-                exit 0
-              }
-            else
-              # Existing repo, just push
-              git push origin master || echo "Push failed, but continuing"
-            fi
-            
-            echo "✅ AUR package update completed"
-            echo "Package will be available at: https://aur.archlinux.org/packages/starcraft-cli"
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
           else
-            echo "❌ SSH key not found, skipping AUR update"
+            git commit -m "Update to ${VERSION}"
+            git push
+            echo "✅ AUR package updated to version ${VERSION}"
+            echo "Package available at: https://aur.archlinux.org/packages/starcraft-cli"
           fi
