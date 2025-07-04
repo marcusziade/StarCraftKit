@@ -33,7 +33,18 @@ jobs:
       - name: Build release binary
         run: |
           echo "Building universal binary for macOS"
-          swift build -c release --arch arm64 --arch x86_64 --product starcraft-cli
+          # Build for each architecture separately, then combine
+          swift build -c release --arch arm64 --product starcraft-cli
+          swift build -c release --arch x86_64 --product starcraft-cli
+          
+          # Create universal binary
+          lipo -create \
+            .build/arm64-apple-macosx/release/starcraft-cli \
+            .build/x86_64-apple-macosx/release/starcraft-cli \
+            -output .build/release/starcraft-cli
+          
+          # Make it executable
+          chmod +x .build/release/starcraft-cli
       
       - name: Create distribution
         run: |
