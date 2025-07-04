@@ -7,104 +7,106 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.os }}
+    name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: macos-latest
+            name: macOS
             artifact-name: StarCraftKit-macOS
             build-args: "-c release --arch arm64 --arch x86_64"
+            executable-name: starcraft-cli
           - os: ubuntu-latest
+            name: Linux
             artifact-name: StarCraftKit-Linux
             build-args: "-c release --static-swift-stdlib"
-          - os: windows-latest
-            artifact-name: StarCraftKit-Windows
-            build-args: "-c release"
+            executable-name: starcraft-cli
     
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: swift-actions/setup-swift@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          swift-version: "5.9"
+          fetch-depth: 0  # Needed for changelog generation
       
-      - name: Cache dependencies
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "5.9.2"
+        continue-on-error: false
+      
+      - name: Verify Swift installation
+        run: |
+          echo "Swift path: $(which swift)"
+          echo "Swift version:"
+          swift --version
+      
+      - name: Cache SPM dependencies
         uses: actions/cache@v4
         with:
           path: .build
           key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
       
       - name: Build release binary
         run: |
           echo "::group::Build Configuration"
           echo "OS: ${{ runner.os }}"
           echo "Build args: ${{ matrix.build-args }}"
-          echo "Swift version:"
-          swift --version
           echo "::endgroup::"
           
-          echo "::group::Build Output"
-          swift build ${{ matrix.build-args }} --verbose
+          echo "::group::Resolving dependencies"
+          swift package resolve
+          echo "::endgroup::"
+          
+          echo "::group::Building release binary"
+          swift build ${{ matrix.build-args }} --product starcraft-cli
           echo "::endgroup::"
       
-      - name: List build artifacts
+      - name: Test release binary
         run: |
-          echo "::group::Build Directory Contents"
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            dir .build\release
-          else
-            ls -la .build/release/
-          fi
+          echo "::group::Testing binary execution"
+          .build/release/${{ matrix.executable-name }} --version || true
           echo "::endgroup::"
       
-      - name: Package binary (Unix)
-        if: runner.os != 'Windows'
+      - name: Create distribution directory
         run: |
-          echo "::group::Packaging for ${{ matrix.artifact-name }}"
           mkdir -p dist
-          echo "Copying binary from .build/release/starcraft-kit to dist/"
-          cp .build/release/starcraft-kit dist/
-          echo "Creating archive: ${{ matrix.artifact-name }}-${{ github.ref_name }}.tar.gz"
-          tar -czf ${{ matrix.artifact-name }}-${{ github.ref_name }}.tar.gz -C dist .
-          echo "Archive created. Size:"
-          ls -lh *.tar.gz
-          echo "::endgroup::"
+          cp .build/release/${{ matrix.executable-name }} dist/
+          
+          # Create a simple README for the distribution
+          cat > dist/README.md << 'EOF'
+          # StarCraftKit CLI
+
+          This is the command-line interface for StarCraftKit.
+
+          ## Installation
+
+          1. Extract the archive
+          2. Move the `starcraft-cli` binary to a location in your PATH
+          3. Make it executable (Unix only): `chmod +x starcraft-cli`
+          4. Run `starcraft-cli --help` to get started
+
+          ## Documentation
+
+          Visit https://github.com/marcusziade/StarCraftKit for full documentation.
+          EOF
       
-      - name: Package binary (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
+      - name: Create archive
         run: |
-          Write-Host "::group::Packaging for ${{ matrix.artifact-name }}"
-          Write-Host "Creating dist directory"
-          New-Item -ItemType Directory -Force -Path dist
-          Write-Host "Copying binary from .build\release\starcraft-kit.exe to dist\"
-          Copy-Item .build\release\starcraft-kit.exe dist\
-          Write-Host "Creating archive: ${{ matrix.artifact-name }}-${{ github.ref_name }}.zip"
-          Compress-Archive -Path dist\* -DestinationPath "${{ matrix.artifact-name }}-${{ github.ref_name }}.zip"
-          Write-Host "Archive created. Size:"
-          Get-ChildItem *.zip | Format-Table Name, Length
-          Write-Host "::endgroup::"
+          ARCHIVE_NAME="${{ matrix.artifact-name }}-${{ github.ref_name }}.tar.gz"
+          echo "Creating archive: $ARCHIVE_NAME"
+          tar -czf "$ARCHIVE_NAME" -C dist .
+          echo "Archive size: $(ls -lh "$ARCHIVE_NAME" | awk '{print $5}')"
       
-      - name: Generate checksums (Unix)
-        if: runner.os != 'Windows'
+      - name: Generate checksum
         run: |
-          echo "::group::Generating checksums"
-          shasum -a 256 *.tar.gz > ${{ matrix.artifact-name }}-${{ github.ref_name }}.sha256
-          echo "Checksum file contents:"
-          cat ${{ matrix.artifact-name }}-${{ github.ref_name }}.sha256
-          echo "::endgroup::"
-      
-      - name: Generate checksums (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          Write-Host "::group::Generating checksums"
-          $hash = Get-FileHash -Algorithm SHA256 *.zip
-          "$($hash.Hash.ToLower())  $($hash.Path.Split('\')[-1])" | Out-File -FilePath "${{ matrix.artifact-name }}-${{ github.ref_name }}.sha256"
-          Write-Host "Checksum file contents:"
-          Get-Content "${{ matrix.artifact-name }}-${{ github.ref_name }}.sha256"
-          Write-Host "::endgroup::"
+          shasum -a 256 *.tar.gz > "${{ matrix.artifact-name }}-${{ github.ref_name }}.sha256"
+          echo "Checksum:"
+          cat "${{ matrix.artifact-name }}-${{ github.ref_name }}.sha256"
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -112,39 +114,79 @@ jobs:
           name: ${{ matrix.artifact-name }}
           path: |
             *.tar.gz
-            *.zip
             *.sha256
+          retention-days: 7
 
   release:
     name: Create Release
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
       
-      - name: Display downloaded artifacts
+      - name: List artifacts
         run: |
-          echo "::group::Downloaded artifacts structure"
+          echo "Downloaded artifacts:"
           find artifacts -type f -name "*" | sort
-          echo "::endgroup::"
-          
-          echo "::group::File sizes"
-          find artifacts -type f -exec ls -lh {} \;
-          echo "::endgroup::"
       
-      - name: Create Release
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          # Extract version number
+          VERSION="${GITHUB_REF#refs/tags/}"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Generate simple release notes
+          cat > release-notes.md << EOF
+          # StarCraftKit $VERSION
+
+          ## What's Changed
+
+          See the [full changelog](https://github.com/${{ github.repository }}/compare/$(git describe --tags --abbrev=0 HEAD^)...$VERSION) for details.
+
+          ## Installation
+
+          ### macOS
+
+          \`\`\`bash
+          curl -L https://github.com/${{ github.repository }}/releases/download/$VERSION/StarCraftKit-macOS-$VERSION.tar.gz | tar xz
+          chmod +x starcraft-cli
+          sudo mv starcraft-cli /usr/local/bin/
+          \`\`\`
+
+          ### Linux
+
+          \`\`\`bash
+          curl -L https://github.com/${{ github.repository }}/releases/download/$VERSION/StarCraftKit-Linux-$VERSION.tar.gz | tar xz
+          chmod +x starcraft-cli
+          sudo mv starcraft-cli /usr/local/bin/
+          \`\`\`
+
+          ## Checksums
+
+          Verify your download with the provided SHA256 checksums.
+          EOF
+      
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           draft: false
           prerelease: false
-          generate_release_notes: true
+          name: StarCraftKit ${{ steps.release_notes.outputs.VERSION }}
+          body_path: release-notes.md
           files: |
             artifacts/**/*.tar.gz
-            artifacts/**/*.zip
             artifacts/**/*.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
