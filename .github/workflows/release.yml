@@ -6,10 +6,33 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'  # Triggers on version tags like 2.0.0
 
 jobs:
-  build-macos:
-    name: Build macOS
-    runs-on: macos-latest
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            name: macOS
+            build-script: |
+              # Build for each architecture separately, then combine
+              swift build -c release --arch arm64 --product starcraft-cli
+              swift build -c release --arch x86_64 --product starcraft-cli
+              
+              # Create universal binary
+              lipo -create \
+                .build/arm64-apple-macosx/release/starcraft-cli \
+                .build/x86_64-apple-macosx/release/starcraft-cli \
+                -output .build/release/starcraft-cli
+              
+              # Make it executable
+              chmod +x .build/release/starcraft-cli
+          - os: ubuntu-latest
+            name: Linux
+            build-script: |
+              swift build -c release --static-swift-stdlib --product starcraft-cli
     
     steps:
       - name: Checkout code
@@ -32,67 +55,34 @@ jobs:
       
       - name: Build release binary
         run: |
-          echo "Building universal binary for macOS"
-          # Build for each architecture separately, then combine
-          swift build -c release --arch arm64 --product starcraft-cli
-          swift build -c release --arch x86_64 --product starcraft-cli
-          
-          # Create universal binary
-          lipo -create \
-            .build/arm64-apple-macosx/release/starcraft-cli \
-            .build/x86_64-apple-macosx/release/starcraft-cli \
-            -output .build/release/starcraft-cli
-          
-          # Make it executable
-          chmod +x .build/release/starcraft-cli
+          echo "Building for ${{ matrix.name }}"
+          ${{ matrix.build-script }}
       
       - name: Create distribution
         run: |
           mkdir -p dist
           cp .build/release/starcraft-cli dist/
-          tar -czf "StarCraftKit-macOS-${{ github.ref_name }}.tar.gz" -C dist .
-          shasum -a 256 *.tar.gz > "StarCraftKit-macOS-${{ github.ref_name }}.sha256"
+          ARCHIVE_NAME="StarCraftKit-${{ matrix.name }}-${{ github.ref_name }}.tar.gz"
+          tar -czf "$ARCHIVE_NAME" -C dist .
+          
+          # Generate checksum
+          if [ "${{ runner.os }}" == "macOS" ]; then
+            shasum -a 256 *.tar.gz > "StarCraftKit-${{ matrix.name }}-${{ github.ref_name }}.sha256"
+          else
+            sha256sum *.tar.gz > "StarCraftKit-${{ matrix.name }}-${{ github.ref_name }}.sha256"
+          fi
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: StarCraftKit-macOS
-          path: |
-            *.tar.gz
-            *.sha256
-
-  build-linux:
-    name: Build Linux (Docker)
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - name: Build in Docker
-        run: |
-          docker run --rm -v "$PWD:/workspace" -w /workspace swift:5.9.2 bash -c "
-            swift build -c release --static-swift-stdlib --product starcraft-cli && \
-            mkdir -p dist && \
-            cp .build/release/starcraft-cli dist/ && \
-            tar -czf StarCraftKit-Linux-${{ github.ref_name }}.tar.gz -C dist . && \
-            sha256sum *.tar.gz > StarCraftKit-Linux-${{ github.ref_name }}.sha256
-          "
-      
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: StarCraftKit-Linux
+          name: StarCraftKit-${{ matrix.name }}
           path: |
             *.tar.gz
             *.sha256
 
   release:
     name: Create Release
-    needs: [build-macos, build-linux]
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
