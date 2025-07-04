@@ -63,6 +63,10 @@ struct StarCraftCLI: AsyncParsableCommand {
             SeriesCommand.self,
             LeaguesCommand.self,
             
+            // Export & Streaming
+            ExportCommand.self,
+            StreamCommand.self,
+            
             // Utilities
             CacheCommand.self,
             TestCommand.self,
