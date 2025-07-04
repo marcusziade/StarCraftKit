@@ -136,9 +136,17 @@ struct PlayerScheduleCommand: AsyncParsableCommand {
             
             // Show current score if live
             if match.isLive && !match.results.isEmpty {
-                let playerScore = match.results.first { $0.teamID == player.id || $0.teamID == player.currentTeam?.id }?.score ?? 0
-                let opponentScore = match.results.first { $0.teamID != player.id && $0.teamID != player.currentTeam?.id }?.score ?? 0
-                print("    Score: \(playerScore) - \(opponentScore)".cyan)
+                let playerScore = match.results.first { result in
+                    result.playerID == player.id || result.teamID == player.id ||
+                    result.teamID == player.currentTeam?.id
+                }?.score ?? 0
+                
+                let opponentScore = match.results.first { result in
+                    result.playerID != player.id && result.teamID != player.id &&
+                    result.teamID != player.currentTeam?.id
+                }?.score ?? 0
+                
+                print("        Score: \(playerScore) - \(opponentScore)".cyan)
             }
         }
         
