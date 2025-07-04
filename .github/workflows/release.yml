@@ -96,6 +96,11 @@ jobs:
           git push
       
       # Update AUR package
+      - name: Checkout main repository for AUR templates
+        uses: actions/checkout@v4
+        with:
+          path: main-repo
+      
       - name: Setup SSH for AUR
         env:
           AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
@@ -103,7 +108,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "$AUR_SSH_PRIVATE_KEY" > ~/.ssh/aur_key
           chmod 600 ~/.ssh/aur_key
+          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
           ssh-keyscan -t rsa aur.archlinux.org >> ~/.ssh/known_hosts
+          
+          # Test SSH connection
+          ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=no aur@aur.archlinux.org help || echo "SSH test completed"
       
       - name: Update AUR package
         run: |
@@ -112,7 +121,8 @@ jobs:
           LINUX_SHA256=$(sha256sum artifacts/starcraft-cli-linux/starcraft-cli-linux.tar.gz | cut -d' ' -f1)
           
           # Clone AUR package or create directory
-          if ! GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key" git clone ssh://aur@aur.archlinux.org/starcraft-cli.git aur-starcraft-cli; then
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=no"
+          if ! git clone ssh://aur@aur.archlinux.org/starcraft-cli.git aur-starcraft-cli; then
             echo "AUR package doesn't exist yet, creating local directory"
             mkdir -p aur-starcraft-cli
             cd aur-starcraft-cli
@@ -122,8 +132,8 @@ jobs:
           
           cd aur-starcraft-cli
           
-          # Copy our PKGBUILD template
-          cp ../aur/starcraft-cli/PKGBUILD .
+          # Copy our PKGBUILD template from main repo
+          cp ../main-repo/aur/starcraft-cli/PKGBUILD .
           
           # Update PKGBUILD with new version and checksum
           sed -i "s/pkgver=.*/pkgver=${VERSION}/" PKGBUILD
@@ -162,5 +172,7 @@ jobs:
           
           # Push to AUR if we have the SSH key
           if [ -f ~/.ssh/aur_key ]; then
-            GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key" git push origin master || echo "AUR push skipped - repository may not exist yet"
+            export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=no"
+            git remote add aur ssh://aur@aur.archlinux.org/starcraft-cli.git 2>/dev/null || true
+            git push aur master || echo "AUR push skipped - repository may not exist yet"
           fi
