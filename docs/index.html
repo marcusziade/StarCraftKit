@@ -1,1 +1,406 @@
-<!doctype html><html lang="en-US" class="no-js"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="/favicon.ico"><link rel="mask-icon" href="/favicon.svg" color="#333333"><title>Documentation</title><script>var baseUrl = "/"</script><script defer="defer" src="/js/chunk-vendors.bdb7cbba.js"></script><script defer="defer" src="/js/index.c4251f56.js"></script><link href="/css/index.3a335429.css" rel="stylesheet"></head><body data-color-scheme="auto"><noscript><style>.noscript{font-family:"SF Pro Display","SF Pro Icons","Helvetica Neue",Helvetica,Arial,sans-serif;margin:92px auto 140px auto;text-align:center;width:980px}.noscript-title{color:#111;font-size:48px;font-weight:600;letter-spacing:-.003em;line-height:1.08365;margin:0 auto 54px auto;width:502px}@media only screen and (max-width:1068px){.noscript{margin:90px auto 120px auto;width:692px}.noscript-title{font-size:40px;letter-spacing:0;line-height:1.1;margin:0 auto 45px auto;width:420px}}@media only screen and (max-width:735px){.noscript{margin:45px auto 60px auto;width:87.5%}.noscript-title{font-size:32px;letter-spacing:.004em;line-height:1.125;margin:0 auto 35px auto;max-width:330px;width:auto}}#loading-placeholder{display:none}</style><div class="noscript"><h1 class="noscript-title">This page requires JavaScript.</h1><p>Please turn on JavaScript in your browser and refresh the page to view its content.</p></div></noscript><div id="app"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarCraftKit - Swift SDK & CLI for StarCraft 2 Esports</title>
+    <meta name="description" content="Modern Swift SDK and CLI for tracking StarCraft 2 esports. Access live matches, player stats, tournaments, and more with async/await support.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 L80 30 L80 70 L50 90 L20 70 L20 30 Z' fill='%2300a8ff' stroke='%23004a7a' stroke-width='3'/%3E%3Cpath d='M50 25 L65 35 L65 65 L50 75 L35 65 L35 35 Z' fill='%23ffa500'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="logo">⬡</span>StarCraftKit
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#sdk">SDK</a></li>
+                <li><a href="#cli">CLI</a></li>
+                <li><a href="#installation">Install</a></li>
+                <li><a href="/StarCraftKit/documentation/starcraftkit" class="docs-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    Docs
+                </a></li>
+                <li><a href="https://github.com/marcusziade/StarCraftKit" target="_blank" class="github-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    <span>GitHub</span>
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="text-gradient">Track StarCraft 2 Esports</span>
+                        <span class="subtitle">Swift SDK. CLI. Real-time.</span>
+                    </h1>
+                    <p class="hero-description">
+                        Access live matches, player stats, and tournament data with a modern Swift SDK and powerful CLI.
+                    </p>
+                    
+                    <!-- Quick Start -->
+                    <div class="quick-start">
+                        <h3>Quick Start</h3>
+                        <div class="code-tabs">
+                            <button class="code-tab active" data-tab="cli">CLI</button>
+                            <button class="code-tab" data-tab="swift">Swift</button>
+                        </div>
+                        <div class="code-block compact" id="cli-code">
+                            <pre><code><span class="comment"># Install CLI</span>
+brew install marcusziade/tap/starcraft-cli
+
+<span class="comment"># Track live matches</span>
+starcraft-cli live --watch
+
+<span class="comment"># Find when Serral plays next</span>
+starcraft-cli player-schedule Serral</code></pre>
+                        </div>
+                        <div class="code-block compact hidden" id="swift-code">
+                            <pre><code><span class="keyword">import</span> StarCraftKit
+
+<span class="comment">// Initialize client</span>
+<span class="keyword">let</span> client = <span class="type">StarCraftClient</span>(apiKey: <span class="string">"YOUR_KEY"</span>)
+
+<span class="comment">// Get live matches</span>
+<span class="keyword">let</span> matches = <span class="keyword">try await</span> client.<span class="function">getLiveMatches</span>()</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-actions">
+                        <a href="#installation" class="btn btn-primary">Get Started</a>
+                        <a href="/StarCraftKit/documentation/starcraftkit" class="btn btn-secondary">Documentation</a>
+                    </div>
+                </div>
+                
+                <div class="hero-demo">
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="terminal-button red"></span>
+                                <span class="terminal-button yellow"></span>
+                                <span class="terminal-button green"></span>
+                            </div>
+                            <span class="terminal-title">starcraft-cli live</span>
+                        </div>
+                        <div class="terminal-body">
+                            <pre><code><span class="output"><span class="term-header">╭────────────────────────────────────────────────╮</span>
+<span class="term-header">│</span>  <span class="term-logo">⬡ StarCraftKit CLI</span> <span class="term-version">v2.0.0</span>                  <span class="term-header">│</span>
+<span class="term-header">╰────────────────────────────────────────────────╯</span>
+
+<span class="term-section">🔴 LIVE MATCHES</span>
+
+<span class="term-match">┌─ <span class="term-tournament">IEM Katowice 2025</span> • <span class="term-stage">Grand Final</span>
+│  <span class="term-player-z">🟦 Serral</span> <span class="term-score">3</span> - <span class="term-score">2</span> <span class="term-player-t">🟥 Clem</span>
+│  <span class="term-status">● Map 6 starting...</span>
+└─ <span class="term-time">Started 2h 31m ago</span>
+
+<span class="term-match">┌─ <span class="term-tournament">GSL Code S</span> • <span class="term-stage">Ro16 Group B</span>
+│  <span class="term-player-p">🟨 herO</span> <span class="term-score">1</span> - <span class="term-score">1</span> <span class="term-player-t">🟥 ByuN</span>
+│  <span class="term-status">● Alcyone LE</span>
+└─ <span class="term-time">Started 14m ago</span>
+
+<span class="term-stats">Found <span class="term-highlight">2 live matches</span> • Auto-refresh <span class="term-dim">ON</span></span></span></code></pre>
+                        </div>
+                    </div>
+                    
+                    <!-- Key Stats -->
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">⚡</span>
+                            <span class="stat-number">Real-time</span>
+                            <span class="stat-text">Live Updates</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🏆</span>
+                            <span class="stat-number">1000+</span>
+                            <span class="stat-text">Tournaments</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🎮</span>
+                            <span class="stat-number">All</span>
+                            <span class="stat-text">Pro Players</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="features-header">
+                <h2 class="section-title">Complete Esports Toolkit</h2>
+                <p class="section-subtitle">Everything you need to track the StarCraft 2 pro scene</p>
+            </div>
+            <div class="features-grid compact">
+                <div class="feature-card compact">
+                    <div class="feature-icon">🔄</div>
+                    <div>
+                        <h3>Live Match Tracking</h3>
+                        <p>Real-time updates with auto-refresh</p>
+                    </div>
+                </div>
+                <div class="feature-card compact">
+                    <div class="feature-icon">🎯</div>
+                    <div>
+                        <h3>Player Analytics</h3>
+                        <p>Stats, schedules, and match history</p>
+                    </div>
+                </div>
+                <div class="feature-card compact">
+                    <div class="feature-icon">🏆</div>
+                    <div>
+                        <h3>Tournament Coverage</h3>
+                        <p>Brackets, results, and upcoming events</p>
+                    </div>
+                </div>
+                <div class="feature-card compact">
+                    <div class="feature-icon">📊</div>
+                    <div>
+                        <h3>Data Export</h3>
+                        <p>JSON and CSV for analysis</p>
+                    </div>
+                </div>
+                <div class="feature-card compact">
+                    <div class="feature-icon">⚡</div>
+                    <div>
+                        <h3>Async/Await</h3>
+                        <p>Modern Swift concurrency</p>
+                    </div>
+                </div>
+                <div class="feature-card compact">
+                    <div class="feature-icon">🛡️</div>
+                    <div>
+                        <h3>Resilient</h3>
+                        <p>Auto-retry with exponential backoff</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SDK Section -->
+    <section id="sdk" class="sdk-section">
+        <div class="container">
+            <div class="sdk-header">
+                <h2 class="section-title">Swift SDK</h2>
+                <p class="section-subtitle">Protocol-oriented, type-safe, production-ready</p>
+            </div>
+            <div class="sdk-grid">
+                <div class="sdk-features">
+                    <h3>Built for Modern Swift</h3>
+                    <ul class="feature-list">
+                        <li>✓ Swift 5.9 with async/await</li>
+                        <li>✓ Protocol-oriented architecture</li>
+                        <li>✓ Strongly typed models</li>
+                        <li>✓ Comprehensive error handling</li>
+                        <li>✓ Actor-based caching</li>
+                        <li>✓ Cross-platform support</li>
+                    </ul>
+                    <div class="platform-badges">
+                        <span class="platform-badge">macOS</span>
+                        <span class="platform-badge">iOS</span>
+                        <span class="platform-badge">watchOS</span>
+                        <span class="platform-badge">tvOS</span>
+                    </div>
+                </div>
+                <div class="sdk-example">
+                    <h3>Example Usage</h3>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">import</span> StarCraftKit
+
+<span class="comment">// Configure client</span>
+<span class="keyword">let</span> config = <span class="type">StarCraftClient</span>.<span class="type">Configuration</span>(
+    apiKey: <span class="string">"YOUR_API_KEY"</span>,
+    cachePolicy: .<span class="function">standard</span>
+)
+<span class="keyword">let</span> client = <span class="type">StarCraftClient</span>(configuration: config)
+
+<span class="comment">// Search for players</span>
+<span class="keyword">let</span> players = <span class="keyword">try await</span> client.<span class="function">searchPlayers</span>(name: <span class="string">"Maru"</span>)
+
+<span class="comment">// Get tournament brackets</span>
+<span class="keyword">let</span> matches = <span class="keyword">try await</span> client.<span class="function">getTournamentMatches</span>(
+    <span class="string">"iem-katowice-2025"</span>
+)
+
+<span class="comment">// Paginate through all results</span>
+<span class="keyword">let</span> allTournaments = <span class="keyword">try await</span> client.<span class="function">executePaginated</span>(
+    <span class="type">TournamentsRequest</span>(status: .<span class="function">upcoming</span>),
+    maxPages: <span class="keyword">nil</span>
+)</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLI Section -->
+    <section id="cli" class="cli-section">
+        <div class="container">
+            <h2 class="section-title">Command Line Interface</h2>
+            <p class="section-subtitle">The definitive tool for StarCraft 2 esports fans</p>
+            
+            <div class="cli-features">
+                <div class="cli-card">
+                    <h3>📺 Live Tracking</h3>
+                    <div class="code-block mini">
+                        <pre><code>starcraft-cli live --watch
+starcraft-cli today
+starcraft-cli upcoming --days 7</code></pre>
+                    </div>
+                </div>
+                <div class="cli-card">
+                    <h3>🎮 Player Intel</h3>
+                    <div class="code-block mini">
+                        <pre><code>starcraft-cli players --race zerg
+starcraft-cli player-schedule Dark
+starcraft-cli player-matches Maru</code></pre>
+                    </div>
+                </div>
+                <div class="cli-card">
+                    <h3>🏆 Tournament Data</h3>
+                    <div class="code-block mini">
+                        <pre><code>starcraft-cli tournaments --tier s
+starcraft-cli tournament-matches GSL
+starcraft-cli series "Code S"</code></pre>
+                    </div>
+                </div>
+                <div class="cli-card">
+                    <h3>🔍 Search & Export</h3>
+                    <div class="code-block mini">
+                        <pre><code>starcraft-cli search "Team Liquid"
+starcraft-cli export players --csv
+starcraft-cli cache stats</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="installation-section">
+        <div class="container">
+            <h2 class="section-title">Installation</h2>
+            
+            <div class="install-grid">
+                <div class="install-option">
+                    <h3>🚀 Swift Package Manager</h3>
+                    <p>Add to your Package.swift:</p>
+                    <div class="code-block compact">
+                        <pre><code>dependencies: [
+    .package(url: "https://github.com/marcusziade/StarCraftKit", from: "2.0.0")
+]</code></pre>
+                    </div>
+                </div>
+                
+                <div class="install-option">
+                    <h3>🍺 Homebrew</h3>
+                    <p>Install the CLI:</p>
+                    <div class="code-block compact">
+                        <pre><code>brew tap marcusziade/tap
+brew install starcraft-cli</code></pre>
+                    </div>
+                </div>
+                
+                <div class="install-option">
+                    <h3>📦 Download Binary</h3>
+                    <p>Get the latest release:</p>
+                    <div class="download-links">
+                        <a href="https://github.com/marcusziade/StarCraftKit/releases/latest/download/starcraft-cli-macos.tar.gz" class="download-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            macOS
+                        </a>
+                        <a href="https://github.com/marcusziade/StarCraftKit/releases/latest/download/starcraft-cli-linux.tar.gz" class="download-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Linux
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="setup-section">
+                <h3>Setup</h3>
+                <p>Get your API key from <a href="https://pandascore.co" target="_blank">PandaScore</a> and set it:</p>
+                <div class="code-block compact">
+                    <pre><code><span class="comment"># For CLI</span>
+export PANDA_TOKEN="your-api-key"
+
+<span class="comment"># For SDK</span>
+let client = StarCraftClient(apiKey: "your-api-key")</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>StarCraftKit</h4>
+                    <p>Modern Swift tools for StarCraft 2 esports</p>
+                    <div class="footer-badges">
+                        <img src="https://img.shields.io/badge/Swift-5.9-orange.svg" alt="Swift 5.9">
+                        <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License">
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="/StarCraftKit/documentation/starcraftkit">API Documentation</a></li>
+                        <li><a href="https://github.com/marcusziade/StarCraftKit">GitHub Repository</a></li>
+                        <li><a href="https://github.com/marcusziade/StarCraftKit/issues">Report Issues</a></li>
+                        <li><a href="https://github.com/marcusziade/StarCraftKit/releases">Releases</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="https://discord.gg/starcraft2">StarCraft Discord</a></li>
+                        <li><a href="https://reddit.com/r/starcraft">r/starcraft</a></li>
+                        <li><a href="https://liquipedia.net/starcraft2">Liquipedia</a></li>
+                        <li><a href="https://tl.net">TeamLiquid</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 StarCraftKit. Built with 💙 for the StarCraft community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
