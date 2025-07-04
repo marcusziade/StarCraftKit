@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 2.0.0)'
+        required: true
+        default: '2.0.0'
 
 jobs:
   build-macos:
@@ -66,8 +72,12 @@ jobs:
       
       - name: Calculate checksums and update formula
         run: |
-          # Get version from tag
-          VERSION="${GITHUB_REF#refs/tags/}"
+          # Get version from tag or workflow input
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/}"
+          fi
           
           # Calculate checksums
           MACOS_SHA256=$(sha256sum artifacts/starcraft-cli-macos/starcraft-cli-macos.tar.gz | cut -d' ' -f1)
@@ -116,8 +126,12 @@ jobs:
       
       - name: Update AUR package
         run: |
-          # Get version and checksum
-          VERSION="${GITHUB_REF#refs/tags/}"
+          # Get version from tag or workflow input
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/}"
+          fi
           LINUX_SHA256=$(sha256sum artifacts/starcraft-cli-linux/starcraft-cli-linux.tar.gz | cut -d' ' -f1)
           
           # Clone AUR package or create directory
@@ -173,6 +187,29 @@ jobs:
           # Push to AUR if we have the SSH key
           if [ -f ~/.ssh/aur_key ]; then
             export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=no"
-            git remote add aur ssh://aur@aur.archlinux.org/starcraft-cli.git 2>/dev/null || true
-            git push aur master || echo "AUR push skipped - repository may not exist yet"
+            
+            # For initial creation, we need to push to a new repository
+            if [ ! -d .git ]; then
+              echo "Error: Not in a git repository"
+              exit 1
+            fi
+            
+            # Check if this is a fresh repo (no remotes)
+            if ! git remote | grep -q .; then
+              echo "Fresh repository detected, setting up AUR remote"
+              git remote add origin ssh://aur@aur.archlinux.org/starcraft-cli.git
+              git push -u origin master || {
+                echo "❌ Failed to push to AUR. The package may not exist yet."
+                echo "To create it, run: ssh aur@aur.archlinux.org setup-repo starcraft-cli"
+                exit 0
+              }
+            else
+              # Existing repo, just push
+              git push origin master || echo "Push failed, but continuing"
+            fi
+            
+            echo "✅ AUR package update completed"
+            echo "Package will be available at: https://aur.archlinux.org/packages/starcraft-cli"
+          else
+            echo "❌ SSH key not found, skipping AUR update"
           fi
