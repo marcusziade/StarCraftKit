@@ -50,7 +50,47 @@ jobs:
         with:
           path: artifacts
       - uses: softprops/action-gh-release@v1
+        id: create_release
         with:
           files: artifacts/**/*.tar.gz
           generate_release_notes: true
           token: ${{ secrets.GH_TOKEN }}
+      
+      # Update Homebrew formula
+      - name: Checkout homebrew-tap
+        uses: actions/checkout@v4
+        with:
+          repository: marcusziade/homebrew-tap
+          token: ${{ secrets.GH_TOKEN }}
+          path: homebrew-tap
+      
+      - name: Calculate checksums and update formula
+        run: |
+          # Get version from tag
+          VERSION="${GITHUB_REF#refs/tags/}"
+          
+          # Calculate checksums
+          MACOS_SHA256=$(sha256sum artifacts/starcraft-cli-macos/starcraft-cli-macos.tar.gz | cut -d' ' -f1)
+          LINUX_SHA256=$(sha256sum artifacts/starcraft-cli-linux/starcraft-cli-linux.tar.gz | cut -d' ' -f1)
+          
+          cd homebrew-tap
+          
+          # Update the formula file
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" Formula/starcraft-cli.rb
+          sed -i "s|download/.*/starcraft-cli-macos|download/${VERSION}/starcraft-cli-macos|" Formula/starcraft-cli.rb
+          sed -i "s|download/.*/starcraft-cli-linux|download/${VERSION}/starcraft-cli-linux|" Formula/starcraft-cli.rb
+          
+          # Update SHA256 for macOS
+          sed -i "/on_macos do/,/end/ s/sha256 \".*\"/sha256 \"${MACOS_SHA256}\"/" Formula/starcraft-cli.rb
+          
+          # Update SHA256 for Linux (within the if block)
+          sed -i "/if Hardware::CPU.intel.*is_64_bit/,/end/ s/sha256 \".*\"/sha256 \"${LINUX_SHA256}\"/" Formula/starcraft-cli.rb
+          
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Commit and push
+          git add Formula/starcraft-cli.rb
+          git commit -m "Update starcraft-cli to ${VERSION}" || exit 0
+          git push
