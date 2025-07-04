@@ -289,6 +289,19 @@ code, pre {
     line-height: 1.5;
 }
 
+/* Installation section specific code blocks */
+.install-option .code-block {
+    flex: 1;
+}
+
+.install-option .code-block pre {
+    padding: 0.75rem 1rem;
+}
+
+.install-option .code-block code {
+    font-size: 0.8rem;
+}
+
 .comment { color: #6a737d; }
 .keyword { color: var(--sc2-blue); font-weight: 600; }
 .string { color: var(--sc2-orange); }
@@ -750,9 +763,6 @@ code, pre {
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-top: 3rem;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .install-option {
@@ -760,16 +770,22 @@ code, pre {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .install-option h3 {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .install-option p {
     color: var(--text-secondary);
     margin-bottom: 1rem;
+    font-size: 0.875rem;
 }
 
 .download-links {
@@ -799,9 +815,6 @@ code, pre {
     margin-top: 3rem;
     padding-top: 3rem;
     border-top: 1px solid var(--border-color);
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 /* Footer */
