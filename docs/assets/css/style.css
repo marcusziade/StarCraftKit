@@ -44,7 +44,9 @@
 }
 
 /* Base Styles */
-* {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -53,6 +55,7 @@
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    width: 100%;
 }
 
 body {
@@ -62,6 +65,8 @@ body {
     line-height: 1.6;
     transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
+    width: 100%;
+    position: relative;
 }
 
 .container {
@@ -184,6 +189,7 @@ code, pre {
     opacity: 0.05;
     animation: rotate 60s linear infinite;
     pointer-events: none;
+    z-index: -1;
 }
 
 @keyframes rotate {
@@ -196,6 +202,7 @@ code, pre {
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: center;
+    max-width: 100%;
 }
 
 .hero-title {
@@ -335,6 +342,7 @@ code, pre {
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--border-color);
+    max-width: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -384,6 +392,8 @@ code, pre {
     font-size: 0.875rem;
     line-height: 1.5;
     color: #586e75;
+    overflow-x: auto;
+    max-width: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -394,6 +404,8 @@ code, pre {
 
 .terminal-body pre {
     margin: 0;
+    overflow-x: auto;
+    white-space: pre;
 }
 
 /* Solarized Light Terminal Colors */
@@ -853,8 +865,14 @@ code, pre {
 
 /* Responsive */
 @media (max-width: 768px) {
+    section {
+        overflow-x: hidden;
+    }
+    
     .container {
         padding: 0 15px;
+        max-width: 100%;
+        overflow-x: hidden;
     }
     
     .navbar .container {
@@ -877,11 +895,22 @@ code, pre {
     .hero {
         min-height: auto;
         padding: 2rem 0;
+        overflow: hidden;
     }
     
     .hero-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
+        padding: 0;
+    }
+    
+    .hero-content {
+        max-width: 100%;
+    }
+    
+    .hero-demo {
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .hero-title {
@@ -1003,8 +1032,22 @@ code, pre {
         font-size: 1rem;
     }
     
+    .quick-start {
+        max-width: 100%;
+        padding: 1rem;
+    }
+    
     .quick-start h3 {
         font-size: 1.1rem;
+    }
+    
+    .code-block {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+    
+    .code-block code {
+        font-size: 0.7rem;
     }
     
     .feature-card h3 {
@@ -1022,5 +1065,29 @@ code, pre {
     .download-link {
         font-size: 0.875rem;
         padding: 0.4rem 0.8rem;
+    }
+    
+    /* Ensure all major sections don't overflow */
+    .features, .sdk-section, .cli-section, .installation-section {
+        overflow-x: hidden;
+    }
+    
+    .sdk-grid, .cli-showcase, .install-grid {
+        max-width: 100%;
+    }
+    
+    /* Fix CLI demo on mobile */
+    .cli-demo {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .cli-output {
+        max-width: 100%;
+    }
+    
+    pre {
+        max-width: 100%;
+        overflow-x: auto;
     }
 }
