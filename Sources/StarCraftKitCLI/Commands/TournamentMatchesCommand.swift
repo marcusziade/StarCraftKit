@@ -254,11 +254,12 @@ struct TournamentMatchesCommand: AsyncParsableCommand {
             return ("TBD", "❓")
         }
         
-        if opponent.type == "player" {
-            return (opponent.opponent.displayName, CountryFlag.flag(for: opponent.opponent.nationality ?? ""))
-        } else if opponent.type == "team" {
+        switch opponent.type.lowercased() {
+        case "player":
+            return (opponent.opponent.displayName, CountryFlag.flag(for: opponent.opponent.nationality))
+        case "team":
             return (opponent.opponent.displayName, "👥")
-        } else {
+        default:
             return ("TBD", "❓")
         }
     }
