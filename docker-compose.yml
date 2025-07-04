@@ -1,0 +1,31 @@
+services:
+  starcraft-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PANDA_TOKEN=${PANDA_TOKEN}
+      - AUTH_METHOD=${AUTH_METHOD:-bearer}
+    volumes:
+      - ./output:/app/output
+    command: ["starcraft-cli", "test"]
+    
+  dev:
+    image: swift:5.9
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      - PANDA_TOKEN=${PANDA_TOKEN}
+      - AUTH_METHOD=${AUTH_METHOD:-bearer}
+    command: swift build
+    
+  test:
+    image: swift:5.9
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      - PANDA_TOKEN=${PANDA_TOKEN}
+      - AUTH_METHOD=${AUTH_METHOD:-bearer}
+    command: swift test
