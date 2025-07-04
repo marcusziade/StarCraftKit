@@ -182,11 +182,11 @@ struct LiveCommand: AsyncParsableCommand {
         
         print("\(indexStr.gray) \(flag1) \(name1Short)\(arrow1) \(score) \(arrow2)\(name2Short) \(flag2) │ \(matchType) │ \(duration.gray) │ \(streamIcon)")
         
-        // Show game progress if detailed games available
-        if !match.games.isEmpty {
-            let completedGames = match.games.filter { $0.winner != nil }.count
-            let progressBar = ProgressBar.create(current: completedGames, total: match.numberOfGames, width: 10)
-            print("     Progress: \(progressBar) \(completedGames)/\(match.numberOfGames)".gray)
+        // Show game progress based on scores
+        if match.numberOfGames > 1 {
+            let gamesPlayed = score1 + score2
+            let progressBar = ProgressBar.create(current: gamesPlayed, total: match.numberOfGames, width: 10)
+            print("     Progress: \(progressBar) \(gamesPlayed)/\(match.numberOfGames)".gray)
         }
         
         // Show stream URL if available  
