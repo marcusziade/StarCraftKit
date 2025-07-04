@@ -216,6 +216,31 @@ document.addEventListener('DOMContentLoaded', function() {
             link.style.color = 'white';
         }
     });
+    
+    // Detect OS and update quick start install command
+    function detectOSAndUpdateInstall() {
+        const installCommandEl = document.querySelector('.install-command-line');
+        if (!installCommandEl) return;
+        
+        const userAgent = navigator.userAgent.toLowerCase();
+        const platform = navigator.platform.toLowerCase();
+        
+        let installCommand = 'brew install marcusziade/tap/starcraft-cli'; // default
+        
+        // Check for Arch Linux
+        if (userAgent.includes('arch') || userAgent.includes('manjaro')) {
+            installCommand = 'yay -S starcraft-cli';
+        }
+        // Check for other Linux
+        else if (platform.includes('linux') || userAgent.includes('linux')) {
+            installCommand = 'wget -qO- github.com/marcusziade/StarCraftKit/releases/latest/download/starcraft-cli-linux.tar.gz | tar xz';
+        }
+        // macOS is default
+        
+        installCommandEl.textContent = installCommand;
+    }
+    
+    detectOSAndUpdateInstall();
 });
 
 // Theme detection and management

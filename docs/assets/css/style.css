@@ -872,7 +872,7 @@ code, pre {
 
 .install-command code {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: var(--text-primary);
     user-select: all;
     white-space: nowrap;
