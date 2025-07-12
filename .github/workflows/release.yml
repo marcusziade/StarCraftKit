@@ -66,7 +66,7 @@ jobs:
       - name: Checkout homebrew-tap
         uses: actions/checkout@v4
         with:
-          repository: marcusziade/homebrew-tap
+          repository: guitaripod/homebrew-tap
           token: ${{ secrets.GH_TOKEN }}
           path: homebrew-tap
       
@@ -177,11 +177,11 @@ jobs:
           	pkgdesc = Command-line tool for tracking StarCraft 2 esports
           	pkgver = ${VERSION}
           	pkgrel = 1
-          	url = https://github.com/marcusziade/StarCraftKit
+          	url = https://github.com/guitaripod/StarCraftKit
           	arch = x86_64
           	license = MIT
           	depends = glibc
-          	source = starcraft-cli-${VERSION}.tar.gz::https://github.com/marcusziade/StarCraftKit/releases/download/${VERSION}/starcraft-cli-linux.tar.gz
+          	source = starcraft-cli-${VERSION}.tar.gz::https://github.com/guitaripod/StarCraftKit/releases/download/${VERSION}/starcraft-cli-linux.tar.gz
           	sha256sums = ${LINUX_SHA256}
           
           pkgname = starcraft-cli
@@ -189,7 +189,7 @@ jobs:
           
           # Configure git
           git config user.name "Marcus Ziade"
-          git config user.email "marcusziade@me.com"
+          git config user.email "guitaripod@me.com"
           
           # Commit and push
           git add PKGBUILD .SRCINFO

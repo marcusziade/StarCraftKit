@@ -1,8 +1,8 @@
 # StarCraftKit
 
 [![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
-[![CI](https://github.com/marcusziade/StarCraftKit/actions/workflows/ci.yml/badge.svg)](https://github.com/marcusziade/StarCraftKit/actions/workflows/ci.yml)
-[![Documentation](https://github.com/marcusziade/StarCraftKit/actions/workflows/docc.yml/badge.svg)](https://github.com/marcusziade/StarCraftKit/actions/workflows/docc.yml)
+[![CI](https://github.com/guitaripod/StarCraftKit/actions/workflows/ci.yml/badge.svg)](https://github.com/guitaripod/StarCraftKit/actions/workflows/ci.yml)
+[![Documentation](https://github.com/guitaripod/StarCraftKit/actions/workflows/docc.yml/badge.svg)](https://github.com/guitaripod/StarCraftKit/actions/workflows/docc.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20iOS%20%7C%20watchOS%20%7C%20tvOS-lightgray.svg)](https://developer.apple.com/swift/)
 
@@ -29,13 +29,13 @@ Add StarCraftKit to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/marcusziade/StarCraftKit", from: "1.0.0")
+    .package(url: "https://github.com/guitaripod/StarCraftKit", from: "1.0.0")
 ]
 ```
 
 Or add it through Xcode:
 1. File → Add Package Dependencies
-2. Enter: `https://github.com/marcusziade/StarCraftKit`
+2. Enter: `https://github.com/guitaripod/StarCraftKit`
 
 ## Quick Start
 
@@ -217,7 +217,7 @@ swift test -v
 
 ## Documentation
 
-Full API documentation is available at: https://marcusziade.github.io/StarCraftKit
+Full API documentation is available at: https://guitaripod.github.io/StarCraftKit
 
 Generate documentation locally:
 
@@ -252,4 +252,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Author
 
-Marcus Ziadé - [@marcusziade](https://github.com/marcusziade)
+Marcus Ziadé - [@guitaripod](https://github.com/guitaripod)
